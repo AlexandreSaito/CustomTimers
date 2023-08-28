@@ -149,12 +149,6 @@ namespace T
                 return;
             }
 
-            if (OM.GetOption(name) != null)
-            {
-                Alert("Já existe uma opção com o mesmo nome!");
-                return;
-            }
-
             if (time == 0)
             {
                 Alert("O tempo não pode ser vazio e/ou 0");
@@ -173,7 +167,7 @@ namespace T
                 option.Time = time;
                 option.AudioName = fileName;
 
-                OM.Save();
+                OM.EditItem(txtOldName.Text, option);
 
                 option.row.Cells[0].Value = option.Name;
                 option.row.Cells[2].Value = option.TimeToString(option.Time);
@@ -182,6 +176,11 @@ namespace T
             }
             else
             {
+                if (OM.GetOption(name) != null)
+                {
+                    Alert("Já existe uma opção com o mesmo nome!");
+                    return;
+                }
                 OM.AddItem(new Option { Name = name, Time = time, AudioName = fileName });
             }
 

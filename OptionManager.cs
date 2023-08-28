@@ -61,7 +61,7 @@ namespace T
                     property.SetValue(option, xProp.Value);
                 }
 
-                if(xElementCount == null)
+                if (xElementCount == null)
                 {
                     xElementCount = new XElement("count");
                     xElementCount.Value = "0";
@@ -98,6 +98,37 @@ namespace T
             Save();
 
             Options.Add(option);
+        }
+
+        public void EditItem(string name, Option option)
+        {
+            XElement xOption = m_document.Root.Elements().FirstOrDefault(x => x.Element("name").Value == name);
+
+            if (xOption == null) return;
+
+            foreach (PropertyInfo property in properties)
+            {
+                object propValueObject = property.GetValue(option);
+                if (propValueObject == null) continue;
+
+                string propValue = Convert.ToString(propValueObject).Trim();
+                string propName = property.Name[0].ToString().ToLower() + property.Name.Substring(1, property.Name.Length - 1);
+
+
+                XElement element = xOption.Element(propName);
+                if (element == null)
+                {
+                    element = new XElement(propName)
+                    {
+                        Value = propValue
+                    };
+                    xOption.Add(element);
+                    continue;
+                }
+                element.Value = propValue;
+            }
+
+            Save();
         }
 
         public Option GetOption(string name)

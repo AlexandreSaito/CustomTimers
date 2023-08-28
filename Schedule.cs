@@ -17,7 +17,7 @@ namespace T
 
         public static void OnUpdate(Schedule schedule)
         {
-            // schedule.Option.Play();
+
         }
 
         public static void OnDone(Schedule schedule)
