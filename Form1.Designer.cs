@@ -103,13 +103,13 @@ namespace T
             // 
             this.Time.HeaderText = "Tempo";
             this.Time.Name = "Time";
-            this.Time.ReadOnly = true;
             this.Time.Width = 70;
             // 
             // CurrentTime
             // 
             this.CurrentTime.HeaderText = "Tempo Decorrido";
             this.CurrentTime.Name = "CurrentTime";
+            this.CurrentTime.ReadOnly = true;
             this.CurrentTime.Width = 70;
             // 
             // ddlAudio
@@ -249,6 +249,8 @@ namespace T
             // 
             // gvOpcoes
             // 
+            this.gvOpcoes.AllowUserToAddRows = false;
+            this.gvOpcoes.AllowUserToDeleteRows = false;
             this.gvOpcoes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvOpcoes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.OptionName,
@@ -300,7 +302,7 @@ namespace T
             this.Controls.Add(this.gvTimers);
             this.Controls.Add(this.btnAddAudio);
             //this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Alertas";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.gvTimers)).EndInit();
             this.groupBox1.ResumeLayout(false);
@@ -327,10 +329,6 @@ namespace T
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DateTimePicker txtOptionTime;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Name;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Time;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CurrentTime;
         private System.Windows.Forms.DataGridView gvOpcoes;
         private System.Windows.Forms.DataGridViewTextBoxColumn OptionName;
         private System.Windows.Forms.DataGridViewTextBoxColumn OptionCount;
@@ -338,6 +336,10 @@ namespace T
         private System.Windows.Forms.DataGridViewTextBoxColumn OptionFile;
         private System.Windows.Forms.TextBox txtOldName;
         private System.Windows.Forms.Button btnCancelar;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Time;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CurrentTime;
     }
 }
 

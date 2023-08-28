@@ -35,12 +35,13 @@ namespace T
         protected void CreateSoundPlayer()
         {
             if (string.IsNullOrEmpty(this.AudioName)) return;
-            m_soundPlayer = new SoundPlayer("./audios/" + this.AudioName + ".wav");
+            m_soundPlayer = new SoundPlayer(AudioOptions.AudiosFolder + "/" + this.AudioName + ".wav");
         }
 
         public void LoadSound()
         {
-            if(m_soundPlayer == null){
+            if (m_soundPlayer == null)
+            {
                 CreateSoundPlayer();
                 m_soundPlayer.Load();
             }
@@ -48,7 +49,7 @@ namespace T
 
         public void Play()
         {
-            if(m_soundPlayer == null)
+            if (m_soundPlayer == null)
             {
                 CreateSoundPlayer();
             }

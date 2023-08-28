@@ -10,23 +10,33 @@ namespace T
 {
     public class Schedule
     {
-        private static int _maxId = 0;
-        private static List<Schedule> _schedules = new List<Schedule>();
+        protected static int _maxId = 0;
+        protected static List<Schedule> _schedules = new List<Schedule>();
 
+        protected static DateTime DateNull = DateTime.Parse("1900-01-01T00:00:00");
+        protected static System.Timers.Timer Timer;
+
+        public static int IndexName = 1;
+        public static int IndexTime = 2;
+        public static int IndexCurrentTime = 3;
         public static List<Schedule> Schedules { get { return _schedules; } }
 
         public static void OnUpdate(Schedule schedule)
         {
-
+            if (schedule.Row == null) return;
+            schedule.Row.Cells[IndexCurrentTime].Value = Schedule.TimeToString(schedule.CurrentTime);
         }
 
         public static void OnDone(Schedule schedule)
         {
-            schedule.Row.DefaultCellStyle.BackColor = Color.Green;
+            if (schedule.Row != null)
+            {
+                schedule.Row.DefaultCellStyle.BackColor = Color.Green;
+            }
             schedule.Option.Play();
+            schedule.Option.AddCount();
         }
 
-        public static System.Timers.Timer Timer;
 
         public static void StartTimer()
         {
@@ -38,7 +48,22 @@ namespace T
             Timer.Start();
         }
 
-        private static void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        public static void AddSchedule(Schedule schedule)
+        {
+            _schedules.Add(schedule);
+        }
+
+        public static void RemoveSchedule(Schedule schedule)
+        {
+            _schedules.Remove(schedule);
+        }
+        public static string TimeToString(int time)
+        {
+            DateTime dt = DateNull.AddSeconds(time);
+            return dt.ToString("HH:mm:ss");
+        }
+
+        protected static void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             var list = new Schedule[Schedules.Count()];
             Schedules.CopyTo(list);
@@ -55,16 +80,6 @@ namespace T
             }
         }
 
-        public static void AddSchedule(Schedule schedule)
-        {
-            _schedules.Add(schedule);
-        }
-
-        public static void RemoveSchedule(Schedule schedule)
-        {
-            _schedules.Remove(schedule);
-        }
-
         public Schedule(Option option)
         {
             Option = option;
@@ -73,34 +88,14 @@ namespace T
 
         private string m_name = "";
         private int m_time = 0;
-        private int m_currentTime = 0;
         public int ID { get; protected set; }
         public Option Option { get; }
         public string Name { get { return string.IsNullOrEmpty(m_name) ? Option.Name : m_name; } set { m_name = value; } }
         public int Time { get { return m_time == 0 ? Option.Time : m_time; } set { m_time = value; } }
-        public int CurrentTime
-        {
-            get { return m_currentTime; }
-            set
-            {
-                m_currentTime = value;
-                if (Row == null) return;
-
-                Row.Cells[3].Value = TimeToString(CurrentTime);
-            }
-        }
+        public int CurrentTime { get; set; }
 
         public bool Done { get; set; }
         public DataGridViewRow Row { get; set; }
-
-        public string TimeToString(int time)
-        {
-            DateTime dt = DateTime.Parse("1900-01-01T00:00:00");
-
-            dt = dt.AddSeconds(time);
-
-            return dt.ToString("HH:mm:ss");
-        }
 
     }
 }

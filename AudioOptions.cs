@@ -11,6 +11,7 @@ namespace T
 {
     public class AudioOptions
     {
+        public const string AudiosFolder = "./audios";
         protected const string xmlFileName = "./audios_option.xml";
 
         protected XDocument m_document;
@@ -58,11 +59,11 @@ namespace T
         public bool SaveAudio(string filePath)
         {
             string fileName = GetFileName(filePath);
-            string outputFilePath = "./audios/" + fileName + ".wav";
+            string outputFilePath = AudiosFolder + "/" + fileName + ".wav";
             
-            if (!Directory.Exists("./audios"))
+            if (!Directory.Exists(AudiosFolder))
             {
-                Directory.CreateDirectory("./audios");
+                Directory.CreateDirectory(AudiosFolder);
             }
 
             if(filePath.Substring(filePath.LastIndexOf('.') + 1, filePath.Length - (filePath.LastIndexOf('.') + 1)) != "wav")
