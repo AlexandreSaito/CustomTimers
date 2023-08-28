@@ -31,10 +31,6 @@ namespace T
         {
             this.btnAddAudio = new System.Windows.Forms.Button();
             this.gvTimers = new System.Windows.Forms.DataGridView();
-            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CurrentTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ddlAudio = new System.Windows.Forms.ComboBox();
             this.ddlOption = new System.Windows.Forms.ComboBox();
             this.btnAddTimer = new System.Windows.Forms.Button();
@@ -54,6 +50,10 @@ namespace T
             this.OptionCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CountTimer = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.OptionFile = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CurrentTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.gvTimers)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvOpcoes)).BeginInit();
@@ -85,32 +85,6 @@ namespace T
             this.gvTimers.Name = "gvTimers";
             this.gvTimers.Size = new System.Drawing.Size(445, 399);
             this.gvTimers.TabIndex = 1;
-            // 
-            // ID
-            // 
-            this.ID.HeaderText = "ID";
-            this.ID.Name = "ID";
-            this.ID.ReadOnly = true;
-            this.ID.Width = 50;
-            // 
-            // Name
-            // 
-            this.Name.HeaderText = "Nome";
-            this.Name.Name = "Name";
-            this.Name.Width = 150;
-            // 
-            // Time
-            // 
-            this.Time.HeaderText = "Tempo";
-            this.Time.Name = "Time";
-            this.Time.ReadOnly = true;
-            this.Time.Width = 70;
-            // 
-            // CurrentTime
-            // 
-            this.CurrentTime.HeaderText = "Tempo Decorrido";
-            this.CurrentTime.Name = "CurrentTime";
-            this.CurrentTime.Width = 70;
             // 
             // ddlAudio
             // 
@@ -249,6 +223,8 @@ namespace T
             // 
             // gvOpcoes
             // 
+            this.gvOpcoes.AllowUserToAddRows = false;
+            this.gvOpcoes.AllowUserToDeleteRows = false;
             this.gvOpcoes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvOpcoes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.OptionName,
@@ -285,6 +261,32 @@ namespace T
             this.OptionFile.HeaderText = "Arquivo";
             this.OptionFile.Name = "OptionFile";
             this.OptionFile.ReadOnly = true;
+            // 
+            // ID
+            // 
+            this.ID.HeaderText = "ID";
+            this.ID.Name = "ID";
+            this.ID.ReadOnly = true;
+            this.ID.Width = 50;
+            // 
+            // Name
+            // 
+            this.Name.HeaderText = "Nome";
+            this.Name.Name = "Name";
+            this.Name.Width = 150;
+            // 
+            // Time
+            // 
+            this.Time.HeaderText = "Tempo";
+            this.Time.Name = "Time";
+            this.Time.Width = 70;
+            // 
+            // CurrentTime
+            // 
+            this.CurrentTime.HeaderText = "Tempo Decorrido";
+            this.CurrentTime.Name = "CurrentTime";
+            this.CurrentTime.ReadOnly = true;
+            this.CurrentTime.Width = 70;
             // 
             // Form1
             // 
@@ -327,10 +329,6 @@ namespace T
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DateTimePicker txtOptionTime;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Name;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Time;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CurrentTime;
         private System.Windows.Forms.DataGridView gvOpcoes;
         private System.Windows.Forms.DataGridViewTextBoxColumn OptionName;
         private System.Windows.Forms.DataGridViewTextBoxColumn OptionCount;
@@ -338,6 +336,10 @@ namespace T
         private System.Windows.Forms.DataGridViewTextBoxColumn OptionFile;
         private System.Windows.Forms.TextBox txtOldName;
         private System.Windows.Forms.Button btnCancelar;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Time;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CurrentTime;
     }
 }
 

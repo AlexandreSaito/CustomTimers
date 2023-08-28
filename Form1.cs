@@ -7,8 +7,9 @@ namespace T
     public partial class Form1 : Form
     {
         // Packages: NAudio
-        const int indexName = 1;
-        const int indexTime = 2;
+        protected const string AudioFilters = "Video Files (*.mp4)|*.mp4|Wav Files (*.wav)|*.wav";
+
+        protected int IndexBtnDeleteTimer = 4;
 
         OptionManager OM = new OptionManager();
         AudioOptions AudioOptions = new AudioOptions();
@@ -28,21 +29,28 @@ namespace T
             OM.Load(gvOpcoes);
             FillDDLOptions();
             FillDDLAudios();
-            gvTimers.CellValueChanged += GvTimers_CellValueChanged;
             Schedule.StartTimer();
-            gvTimers.Columns.Insert(4, new DataGridViewButtonColumn()
+
+            gvTimers.Columns.Insert(gvTimers.Columns.Count, new DataGridViewButtonColumn()
             {
-                Name= "btnDelete",
-                Text= "Remove"
+                Name = "btnDelete",
+                Text = "Remove"
             });
+
+            gvTimers.CellValueChanged += GvTimers_CellValueChanged;
             gvTimers.CellClick += GvTimers_CellClick;
             gvOpcoes.CellClick += GvOpcoes_CellClick;
+
+            if (gvTimers.Columns["Name"] != null) Schedule.IndexName = gvTimers.Columns["Name"].Index;
+            if (gvTimers.Columns["Time"] != null) Schedule.IndexTime = gvTimers.Columns["Time"].Index;
+            if (gvTimers.Columns["CurrentTime"] != null) Schedule.IndexCurrentTime = gvTimers.Columns["CurrentTime"].Index;
+            if (gvTimers.Columns["btnDelete"] != null) IndexBtnDeleteTimer = gvTimers.Columns["btnDelete"].Index;
         }
         private void GvTimers_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == gvTimers.Columns["btnDelete"].Index)
+            if (e.ColumnIndex == IndexBtnDeleteTimer)
             {
-                var selected = Schedule.Schedules.FirstOrDefault(x => x.Row.Index == e.RowIndex);
+                Schedule selected = Schedule.Schedules.FirstOrDefault(x => x.Row.Index == e.RowIndex);
                 if (selected == null) return;
 
                 gvTimers.Rows.Remove(selected.Row);
@@ -56,11 +64,28 @@ namespace T
             var selected = Schedule.Schedules.FirstOrDefault(x => x.Row.Index == e.RowIndex);
             if (selected == null) return;
 
-            switch (e.ColumnIndex)
+            if (e.ColumnIndex == Schedule.IndexName)
             {
-                case indexName: selected.Name = selected.Row.Cells[indexName].Value.ToString(); break;
-                case indexTime: break;
-                default: break;
+                selected.Name = selected.Row.Cells[Schedule.IndexName].Value.ToString();
+            }
+            else if (e.ColumnIndex == Schedule.IndexTime)
+            {
+                string[] value = selected.Row.Cells[Schedule.IndexTime].Value.ToString().Split(':');
+                int seconds = 0;
+                if (value.Length == 1)
+                {
+                    seconds = Convert.ToInt32(value[0]);
+                }
+                else if (value.Length == 2)
+                {
+                    seconds = Convert.ToInt32(value[0]) * 60 + Convert.ToInt32(value[1]);
+                }
+                else if (value.Length == 3)
+                {
+                    seconds = (Convert.ToInt32(value[0]) * 60 + Convert.ToInt32(value[1])) * 60 + Convert.ToInt32(value[2]);
+                }
+                selected.Time = seconds;
+                selected.Row.Cells[Schedule.IndexTime].Value = Schedule.TimeToString(selected.Time);
             }
         }
 
@@ -103,18 +128,18 @@ namespace T
                 Name = customName,
             };
 
-            DataGridViewRow row = gvTimers.Rows[gvTimers.Rows.Add(schedule.ID, schedule.Name, schedule.TimeToString(schedule.Time), schedule.TimeToString(schedule.CurrentTime))];
+            DataGridViewRow row = gvTimers.Rows[gvTimers.Rows.Add(schedule.ID, schedule.Name, Schedule.TimeToString(schedule.Time), Schedule.TimeToString(schedule.CurrentTime))];
 
             schedule.Row = row;
             Schedule.AddSchedule(schedule);
-
-            option.AddCount();
         }
 
         private void btnAddAudio_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Video Files (*.mp4)|*.mp4|Wav Files Only (*.wav)|*.wav";
+            OpenFileDialog ofd = new OpenFileDialog
+            {
+                Filter = AudioFilters
+            };
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 AudioOptions.SaveAudio(ofd.FileName);
@@ -158,7 +183,7 @@ namespace T
             if (!string.IsNullOrEmpty(txtOldName.Text))
             {
                 var option = OM.GetOption(txtOldName.Text);
-                if(option == null)
+                if (option == null)
                 {
                     return;
                 }
@@ -173,6 +198,12 @@ namespace T
                 option.row.Cells[2].Value = option.TimeToString(option.Time);
                 option.row.Cells[3].Value = option.AudioName;
 
+                var s = Schedule.Schedules.Where(x => x.Option == option);
+                foreach (var item in s)
+                {
+                    item.Row.Cells[Schedule.IndexName].Value = item.Name;
+                    item.Row.Cells[Schedule.IndexTime].Value = option.TimeToString(item.Time);
+                }
             }
             else
             {
