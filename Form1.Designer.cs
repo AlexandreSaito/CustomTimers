@@ -31,6 +31,10 @@ namespace T
         {
             this.btnAddAudio = new System.Windows.Forms.Button();
             this.gvTimers = new System.Windows.Forms.DataGridView();
+            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CurrentTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ddlAudio = new System.Windows.Forms.ComboBox();
             this.ddlOption = new System.Windows.Forms.ComboBox();
             this.btnAddTimer = new System.Windows.Forms.Button();
@@ -50,10 +54,6 @@ namespace T
             this.OptionCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CountTimer = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.OptionFile = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CurrentTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.gvTimers)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvOpcoes)).BeginInit();
@@ -85,6 +85,32 @@ namespace T
             this.gvTimers.Name = "gvTimers";
             this.gvTimers.Size = new System.Drawing.Size(445, 399);
             this.gvTimers.TabIndex = 1;
+            // 
+            // ID
+            // 
+            this.ID.HeaderText = "ID";
+            this.ID.Name = "ID";
+            this.ID.ReadOnly = true;
+            this.ID.Width = 50;
+            // 
+            // Name
+            // 
+            this.Name.HeaderText = "Nome";
+            this.Name.Name = "Name";
+            this.Name.Width = 150;
+            // 
+            // Time
+            // 
+            this.Time.HeaderText = "Tempo";
+            this.Time.Name = "Time";
+            this.Time.Width = 70;
+            // 
+            // CurrentTime
+            // 
+            this.CurrentTime.HeaderText = "Tempo Decorrido";
+            this.CurrentTime.Name = "CurrentTime";
+            this.CurrentTime.ReadOnly = true;
+            this.CurrentTime.Width = 70;
             // 
             // ddlAudio
             // 
@@ -262,32 +288,6 @@ namespace T
             this.OptionFile.Name = "OptionFile";
             this.OptionFile.ReadOnly = true;
             // 
-            // ID
-            // 
-            this.ID.HeaderText = "ID";
-            this.ID.Name = "ID";
-            this.ID.ReadOnly = true;
-            this.ID.Width = 50;
-            // 
-            // Name
-            // 
-            this.Name.HeaderText = "Nome";
-            this.Name.Name = "Name";
-            this.Name.Width = 150;
-            // 
-            // Time
-            // 
-            this.Time.HeaderText = "Tempo";
-            this.Time.Name = "Time";
-            this.Time.Width = 70;
-            // 
-            // CurrentTime
-            // 
-            this.CurrentTime.HeaderText = "Tempo Decorrido";
-            this.CurrentTime.Name = "CurrentTime";
-            this.CurrentTime.ReadOnly = true;
-            this.CurrentTime.Width = 70;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -301,8 +301,8 @@ namespace T
             this.Controls.Add(this.ddlOption);
             this.Controls.Add(this.gvTimers);
             this.Controls.Add(this.btnAddAudio);
-            //this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "Form1";
+            this.Text = "Alertas";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.gvTimers)).EndInit();
             this.groupBox1.ResumeLayout(false);
