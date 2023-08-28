@@ -23,7 +23,6 @@ namespace T
 
         public int Count { get; set; }
 
-
         public void AddCount()
         {
             if (xElementCount == null) return;

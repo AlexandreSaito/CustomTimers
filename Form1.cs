@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -11,7 +12,7 @@ namespace T
 
         protected int IndexBtnDeleteTimer = 4;
 
-        OptionManager OM = new OptionManager();
+        OptionManager OM;
         AudioOptions AudioOptions = new AudioOptions();
 
         public Form1()
@@ -26,11 +27,6 @@ namespace T
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            OM.Load(gvOpcoes);
-            FillDDLOptions();
-            FillDDLAudios();
-            Schedule.StartTimer();
-
             gvTimers.Columns.Insert(gvTimers.Columns.Count, new DataGridViewButtonColumn()
             {
                 Name = "btnDelete",
@@ -45,7 +41,24 @@ namespace T
             if (gvTimers.Columns["Time"] != null) Schedule.IndexTime = gvTimers.Columns["Time"].Index;
             if (gvTimers.Columns["CurrentTime"] != null) Schedule.IndexCurrentTime = gvTimers.Columns["CurrentTime"].Index;
             if (gvTimers.Columns["btnDelete"] != null) IndexBtnDeleteTimer = gvTimers.Columns["btnDelete"].Index;
+
+            string lastSelected = OptionManager.LastSelected();
+            FillDDLAlertGroup(lastSelected);
+            LoadAlertDefinition(lastSelected);
         }
+
+        protected void LoadAlertDefinition(string definition)
+        {
+            gvTimers.Rows.Clear();
+            gvOpcoes.Rows.Clear();
+            OM = null;
+            OM = new OptionManager(definition, gvOpcoes);
+            OM.Load();
+            FillDDLOptions();
+            FillDDLAudios();
+            Schedule.StartTimer();
+        }
+
         private void GvTimers_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex == IndexBtnDeleteTimer)
@@ -93,6 +106,19 @@ namespace T
         {
             string[] times = time.Split(':');
             return (Convert.ToInt32(times[0]) * 60 + Convert.ToInt32(times[1])) * 60 + Convert.ToInt32(times[2]);
+        }
+
+        protected void FillDDLAlertGroup(string selected)
+        {
+            ddlAlertGroup.Items.Clear();
+            DirectoryInfo directory = new DirectoryInfo(OptionManager.PredefsFolderPath);
+            var files = directory.GetFiles();
+            foreach (var item in files)
+            {
+                ddlAlertGroup.Items.Add(item.Name.Replace(".xml", ""));
+            }
+
+            ddlAlertGroup.SelectedIndex = ddlAlertGroup.Items.IndexOf(selected);
         }
 
         protected void FillDDLOptions()
@@ -248,5 +274,20 @@ namespace T
             txtOptionTime.Text = "00:00:00";
         }
 
+        private void btnAddDefAlert_Click(object sender, EventArgs e)
+        {
+            FormNewDefAlert formNewDefAlert = new FormNewDefAlert();
+            if (formNewDefAlert.ShowDialog() == DialogResult.OK)
+            {
+                LoadAlertDefinition(formNewDefAlert.TextValue);
+                OM.Save();
+                FillDDLAlertGroup(formNewDefAlert.TextValue);
+            }
+        }
+
+        private void ddlAlertGroup_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadAlertDefinition(ddlAlertGroup.SelectedItem.ToString());
+        }
     }
 }

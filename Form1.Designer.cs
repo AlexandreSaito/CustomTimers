@@ -54,16 +54,20 @@ namespace T
             this.OptionCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CountTimer = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.OptionFile = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ddlAlertGroup = new System.Windows.Forms.ComboBox();
+            this.btnAddDefAlert = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.gvTimers)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvOpcoes)).BeginInit();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnAddAudio
             // 
-            this.btnAddAudio.Location = new System.Drawing.Point(474, 250);
+            this.btnAddAudio.Location = new System.Drawing.Point(197, 130);
             this.btnAddAudio.Name = "btnAddAudio";
-            this.btnAddAudio.Size = new System.Drawing.Size(90, 23);
+            this.btnAddAudio.Size = new System.Drawing.Size(111, 23);
             this.btnAddAudio.TabIndex = 0;
             this.btnAddAudio.Text = "Adicionar Audio";
             this.btnAddAudio.UseVisualStyleBackColor = true;
@@ -159,6 +163,7 @@ namespace T
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.btnSaveOption);
             this.groupBox1.Controls.Add(this.ddlAudio);
+            this.groupBox1.Controls.Add(this.btnAddAudio);
             this.groupBox1.Location = new System.Drawing.Point(474, 279);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(314, 159);
@@ -178,7 +183,7 @@ namespace T
             // 
             // txtOldName
             // 
-            this.txtOldName.Location = new System.Drawing.Point(207, 132);
+            this.txtOldName.Location = new System.Drawing.Point(9, 105);
             this.txtOldName.Name = "txtOldName";
             this.txtOldName.Size = new System.Drawing.Size(100, 20);
             this.txtOldName.TabIndex = 9;
@@ -257,7 +262,7 @@ namespace T
             this.OptionCount,
             this.CountTimer,
             this.OptionFile});
-            this.gvOpcoes.Location = new System.Drawing.Point(464, 39);
+            this.gvOpcoes.Location = new System.Drawing.Point(464, 123);
             this.gvOpcoes.Name = "gvOpcoes";
             this.gvOpcoes.Size = new System.Drawing.Size(324, 150);
             this.gvOpcoes.TabIndex = 8;
@@ -288,11 +293,43 @@ namespace T
             this.OptionFile.Name = "OptionFile";
             this.OptionFile.ReadOnly = true;
             // 
+            // ddlAlertGroup
+            // 
+            this.ddlAlertGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ddlAlertGroup.FormattingEnabled = true;
+            this.ddlAlertGroup.Location = new System.Drawing.Point(6, 19);
+            this.ddlAlertGroup.Name = "ddlAlertGroup";
+            this.ddlAlertGroup.Size = new System.Drawing.Size(306, 21);
+            this.ddlAlertGroup.TabIndex = 9;
+            this.ddlAlertGroup.SelectedIndexChanged += new System.EventHandler(this.ddlAlertGroup_SelectedIndexChanged);
+            // 
+            // btnAddDefAlert
+            // 
+            this.btnAddDefAlert.Location = new System.Drawing.Point(6, 46);
+            this.btnAddDefAlert.Name = "btnAddDefAlert";
+            this.btnAddDefAlert.Size = new System.Drawing.Size(111, 23);
+            this.btnAddDefAlert.TabIndex = 10;
+            this.btnAddDefAlert.Text = "Novo";
+            this.btnAddDefAlert.UseVisualStyleBackColor = true;
+            this.btnAddDefAlert.Click += new System.EventHandler(this.btnAddDefAlert_Click);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.ddlAlertGroup);
+            this.groupBox2.Controls.Add(this.btnAddDefAlert);
+            this.groupBox2.Location = new System.Drawing.Point(464, 38);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(318, 79);
+            this.groupBox2.TabIndex = 11;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Definições de alertas";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.gvOpcoes);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.groupBox1);
@@ -300,7 +337,6 @@ namespace T
             this.Controls.Add(this.btnAddTimer);
             this.Controls.Add(this.ddlOption);
             this.Controls.Add(this.gvTimers);
-            this.Controls.Add(this.btnAddAudio);
             //this.Name = "Form1";
             this.Text = "Alertas";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -308,6 +344,7 @@ namespace T
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvOpcoes)).EndInit();
+            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -340,6 +377,9 @@ namespace T
         private System.Windows.Forms.DataGridViewTextBoxColumn Name;
         private System.Windows.Forms.DataGridViewTextBoxColumn Time;
         private System.Windows.Forms.DataGridViewTextBoxColumn CurrentTime;
+        private System.Windows.Forms.ComboBox ddlAlertGroup;
+        private System.Windows.Forms.Button btnAddDefAlert;
+        private System.Windows.Forms.GroupBox groupBox2;
     }
 }
 

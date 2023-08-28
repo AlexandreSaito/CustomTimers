@@ -14,16 +14,44 @@ namespace T
     {
         protected static Type int_type = typeof(int);
 
-        protected const string fileName = "./predefs.xml";
+        public const string PredefsFolderPath = "./predefs";
         protected static Type optionType = typeof(Option);
         protected static PropertyInfo[] properties = optionType.GetProperties();
+
+        public static string LastSelected()
+        {
+            if (!File.Exists("./configs")) return "Default";
+            string[] configs;
+            using (var file = new FileInfo("./configs").OpenRead())
+            {
+                using (StreamReader sr = new StreamReader(file))
+                {
+                    configs = sr.ReadToEnd().Split('\n');
+                }
+            }
+
+            string lastSelected = configs.FirstOrDefault(x => x.StartsWith("LAST_SELECTED"));
+            if (string.IsNullOrEmpty(lastSelected)) return "Default";
+
+            return lastSelected.Replace("LAST_SELECTED:", "").Trim();
+        }
 
         protected XDocument m_document;
 
         public List<Option> Options { get; protected set; } = new List<Option>();
 
-        public OptionManager()
+        protected string fileName;
+        protected static string name;
+        protected DataGridView grid;
+
+        public OptionManager(string predefName, DataGridView grid)
         {
+            this.grid = grid;
+            name = predefName;
+            fileName = PredefsFolderPath + "/" + predefName + ".xml";
+
+            if (!Directory.Exists(PredefsFolderPath)) Directory.CreateDirectory(PredefsFolderPath);
+
             if (!File.Exists(fileName))
             {
                 m_document = new XDocument();
@@ -33,7 +61,7 @@ namespace T
             m_document = XDocument.Load(fileName);
         }
 
-        public void Load(DataGridView grid)
+        public void Load()
         {
             IEnumerable<XElement> xElements = m_document.Root.Elements();
 
@@ -78,6 +106,7 @@ namespace T
         public void AddItem(Option option)
         {
             XElement xOption = new XElement("option");
+            XElement xElementCount = null;
 
             foreach (PropertyInfo property in properties)
             {
@@ -91,12 +120,16 @@ namespace T
                 {
                     Value = propValue
                 };
+                if (property.Name == "Count") xElementCount = element;
                 xOption.Add(element);
             }
 
             m_document.Root.Add(xOption);
             Save();
 
+            DataGridViewRow row = grid.Rows[grid.Rows.Add(option.Name, option.Count, option.TimeToString(option.Time), option.AudioName)];
+            option.row = row;
+            option.xElementCount = xElementCount;
             Options.Add(option);
         }
 
@@ -139,6 +172,7 @@ namespace T
         public void Save()
         {
             m_document.Save(fileName);
+            File.WriteAllText("./configs", "LAST_SELECTED: " + name);
         }
 
         ~OptionManager()
