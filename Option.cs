@@ -46,7 +46,7 @@ namespace T
             }
         }
 
-        public void Play()
+        public void PlaySound()
         {
             if (m_soundPlayer == null)
             {
@@ -56,7 +56,7 @@ namespace T
             m_soundPlayer.PlayLooping();
         }
 
-        public void Stop()
+        public void StopSound()
         {
             if (m_soundPlayer == null) return;
             m_soundPlayer.Stop();

@@ -33,7 +33,7 @@ namespace T
             {
                 schedule.Row.DefaultCellStyle.BackColor = Color.Green;
             }
-            schedule.Option.Play();
+            schedule.Option.PlaySound();
             schedule.Option.AddCount();
         }
 

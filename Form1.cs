@@ -68,7 +68,7 @@ namespace T
 
                 gvTimers.Rows.Remove(selected.Row);
                 Schedule.RemoveSchedule(selected);
-                selected.Option.Stop();
+                selected.Option.StopSound();
             }
         }
 

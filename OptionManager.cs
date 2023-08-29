@@ -20,20 +20,7 @@ namespace T
 
         public static string LastSelected()
         {
-            if (!File.Exists("./configs")) return "Default";
-            string[] configs;
-            using (var file = new FileInfo("./configs").OpenRead())
-            {
-                using (StreamReader sr = new StreamReader(file))
-                {
-                    configs = sr.ReadToEnd().Split('\n');
-                }
-            }
-
-            string lastSelected = configs.FirstOrDefault(x => x.StartsWith("LAST_SELECTED"));
-            if (string.IsNullOrEmpty(lastSelected)) return "Default";
-
-            return lastSelected.Replace("LAST_SELECTED:", "").Trim();
+            return CustomConfiguration.Singleton.LastSelected;
         }
 
         protected XDocument m_document;
@@ -41,13 +28,12 @@ namespace T
         public List<Option> Options { get; protected set; } = new List<Option>();
 
         protected string fileName;
-        protected static string name;
         protected DataGridView grid;
 
         public OptionManager(string predefName, DataGridView grid)
         {
             this.grid = grid;
-            name = predefName;
+            CustomConfiguration.Singleton.LastSelected = predefName;
             fileName = PredefsFolderPath + "/" + predefName + ".xml";
 
             if (!Directory.Exists(PredefsFolderPath)) Directory.CreateDirectory(PredefsFolderPath);
@@ -172,7 +158,6 @@ namespace T
         public void Save()
         {
             m_document.Save(fileName);
-            File.WriteAllText("./configs", "LAST_SELECTED: " + name);
         }
 
         ~OptionManager()
