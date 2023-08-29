@@ -83,7 +83,17 @@ namespace T
             }
             else if (e.ColumnIndex == Schedule.IndexTime)
             {
+                if(!int.TryParse(selected.Row.Cells[Schedule.IndexTime].Value.ToString().Replace(":", ""), out int result))
+                {
+                    Alert("O valor não pode conter letrar ou caracteres especiais exceto ':'");
+                    return;
+                }
                 string[] value = selected.Row.Cells[Schedule.IndexTime].Value.ToString().Split(':');
+                if(value.Length > 3)
+                {
+                    Alert("O valor deve conter no maximo hora:minuto:segundo");
+                    return;
+                }
                 int seconds = 0;
                 if (value.Length == 1)
                 {
