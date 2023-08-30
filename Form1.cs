@@ -11,6 +11,7 @@ namespace T
         protected const string AudioFilters = "Video Files (*.mp4)|*.mp4|Wav Files (*.wav)|*.wav";
 
         protected int IndexBtnPauseTimer = 4;
+        protected int IndexBtnResetTimer = 4;
         protected int IndexBtnDeleteTimer = 4;
 
         OptionManager OM;
@@ -30,15 +31,21 @@ namespace T
         {
             gvTimers.CellValueChanged += GvTimers_CellValueChanged;
             gvTimers.CellClick += GvTimers_CellClick;
-            gvOpcoes.CellClick += GvOpcoes_CellClick;
+            gvOpcoes.CellDoubleClick += GvOpcoes_CellDoubleClick;
 
-            if (gvTimers.Columns["Name"] != null) Schedule.IndexName = gvTimers.Columns["Name"].Index;
-            if (gvTimers.Columns["Time"] != null) Schedule.IndexTime = gvTimers.Columns["Time"].Index;
-            if (gvTimers.Columns["TotalTime"] != null) Schedule.IndexMaxTime = gvTimers.Columns["TotalTime"].Index;
-            if (gvTimers.Columns["CurrentTime"] != null) Schedule.IndexCurrentTime = gvTimers.Columns["CurrentTime"].Index;
-            if (gvTimers.Columns["Stack"] != null) Schedule.IndexStackedCount = gvTimers.Columns["Stack"].Index;
-            if (gvTimers.Columns["btnDelete"] != null) IndexBtnDeleteTimer = gvTimers.Columns["btnDelete"].Index;
-            if (gvTimers.Columns["btnPause"] != null) IndexBtnPauseTimer = gvTimers.Columns["btnPause"].Index;
+            Schedule.IndexName = gvTimers.Columns["Name"].Index;
+            Schedule.IndexTime = gvTimers.Columns["Time"].Index;
+            Schedule.IndexMaxTime = gvTimers.Columns["TotalTime"].Index;
+            Schedule.IndexCurrentTime = gvTimers.Columns["CurrentTime"].Index;
+            Schedule.IndexStackedCount = gvTimers.Columns["Stack"].Index;
+            IndexBtnDeleteTimer = gvTimers.Columns["btnDelete"].Index;
+            IndexBtnPauseTimer = gvTimers.Columns["btnPause"].Index;
+            IndexBtnResetTimer = gvTimers.Columns["btnReset"].Index;
+
+            Option.IndexName = gvOpcoes.Columns["OptionName"].Index;
+            Option.IndexTime = gvOpcoes.Columns["OptionTimer"].Index;
+            Option.IndexFile = gvOpcoes.Columns["OptionFile"].Index;
+            Option.IndexCount = gvOpcoes.Columns["OptionCount"].Index;
 
             string lastSelected = OptionManager.LastSelected();
             FillDDLAlertGroup(lastSelected);
@@ -68,12 +75,22 @@ namespace T
                 Schedule.RemoveSchedule(selected);
                 selected.Option.StopSound();
             }
-            if (e.ColumnIndex == IndexBtnPauseTimer)
+            else if (e.ColumnIndex == IndexBtnPauseTimer)
             {
                 Schedule selected = Schedule.Schedules.FirstOrDefault(x => x.Row.Index == e.RowIndex);
                 if (selected == null) return;
 
                 selected.Option.StopSound();
+            }
+            else if (e.ColumnIndex == IndexBtnResetTimer)
+            {
+                Schedule selected = Schedule.Schedules.FirstOrDefault(x => x.Row.Index == e.RowIndex);
+                if (selected == null) return;
+
+                selected.Option.StopSound();
+                gvTimers.Rows.Remove(selected.Row);
+                Schedule.RemoveSchedule(selected);
+                AddTimer(selected.Option.Name, selected.Name, selected.Count);
             }
         }
 
@@ -179,7 +196,6 @@ namespace T
                 Count = stack
             };
 
-            //DataGridViewRow row = gvTimers.Rows[gvTimers.Rows.Add(schedule.ID, schedule.Name, Schedule.TimeToString(schedule.Time), Schedule.TimeToString(schedule.CurrentTime))];
             DataGridViewRow row = gvTimers.Rows[gvTimers.Rows.Add(schedule.ID, schedule.Name)];
             schedule.Row = row;
             schedule.UpdateDataGridViewRow();
@@ -207,6 +223,7 @@ namespace T
             string customName = txtCustomName.Text;
             int stack = (int)txtStack.Value;
             AddTimer(name, customName, stack);
+            txtStack.Value = 1;
         }
 
         private void btnSaveOption_Click(object sender, EventArgs e)
@@ -247,15 +264,12 @@ namespace T
 
                 OM.EditItem(txtOldName.Text, option);
 
-                option.row.Cells[0].Value = option.Name;
-                option.row.Cells[2].Value = option.TimeToString(option.Time);
-                option.row.Cells[3].Value = option.AudioName;
+                option.UpdateDataGridRow();
 
                 var s = Schedule.Schedules.Where(x => x.Option == option);
                 foreach (var item in s)
                 {
-                    item.Row.Cells[Schedule.IndexName].Value = item.Name;
-                    item.Row.Cells[Schedule.IndexTime].Value = option.TimeToString(item.Time);
+                    item.UpdateDataGridViewRow();
                 }
             }
             else
@@ -278,7 +292,8 @@ namespace T
             txtCustomName.Text = ddlOption.SelectedItem.ToString();
         }
 
-        private void GvOpcoes_CellClick(object sender, DataGridViewCellEventArgs e)
+
+        private void GvOpcoes_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             var option = OM.Options.Find(x => x.row != null && x.row.Index == e.RowIndex);
             if (option == null) return;
@@ -287,6 +302,7 @@ namespace T
             txtOptionName.Text = option.Name;
             txtOptionTime.Text = option.TimeToString(option.Time);
             ddlAudio.SelectedIndex = ddlAudio.Items.IndexOf(option.AudioName);
+            btnResetOptionCount.Visible = true;
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
@@ -299,6 +315,7 @@ namespace T
             txtOldName.Text = "";
             txtOptionName.Text = "";
             txtOptionTime.Text = "00:00:00";
+            btnResetOptionCount.Visible = false;
         }
 
         private void btnAddDefAlert_Click(object sender, EventArgs e)
@@ -315,6 +332,22 @@ namespace T
         private void ddlAlertGroup_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadAlertDefinition(ddlAlertGroup.SelectedItem.ToString());
+        }
+
+        private void btnResetOptionCount_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(txtOldName.Text))
+            {
+                var option = OM.GetOption(txtOldName.Text);
+                if (option == null)
+                {
+                    return;
+                }
+
+                option.Count = 0;
+                option.UpdateDataGridRow();
+                ClearOptionsFields();
+            }
         }
     }
 }

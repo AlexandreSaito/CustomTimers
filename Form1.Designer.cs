@@ -31,11 +31,21 @@ namespace T
         {
             this.btnAddAudio = new System.Windows.Forms.Button();
             this.gvTimers = new System.Windows.Forms.DataGridView();
+            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TotalTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CurrentTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Stack = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnPause = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.btnReset = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.btnDelete = new System.Windows.Forms.DataGridViewButtonColumn();
             this.ddlAudio = new System.Windows.Forms.ComboBox();
             this.ddlOption = new System.Windows.Forms.ComboBox();
             this.btnAddTimer = new System.Windows.Forms.Button();
             this.txtCustomName = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnResetOptionCount = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
             this.txtOldName = new System.Windows.Forms.TextBox();
             this.txtOptionTime = new System.Windows.Forms.DateTimePicker();
@@ -46,26 +56,18 @@ namespace T
             this.btnSaveOption = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.gvOpcoes = new System.Windows.Forms.DataGridView();
-            this.OptionName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OptionCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CountTimer = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OptionFile = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ddlAlertGroup = new System.Windows.Forms.ComboBox();
             this.btnAddDefAlert = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.btnAddNewOption = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
             this.txtStack = new System.Windows.Forms.NumericUpDown();
-            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TotalTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CurrentTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Stack = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnPause = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.btnDelete = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.label6 = new System.Windows.Forms.Label();
+            this.btnAddNewOption = new System.Windows.Forms.Button();
+            this.OptionName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OptionCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OptionTimer = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OptionFile = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.gvTimers)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvOpcoes)).BeginInit();
@@ -77,7 +79,7 @@ namespace T
             // btnAddAudio
             // 
             this.btnAddAudio.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddAudio.Location = new System.Drawing.Point(976, 29);
+            this.btnAddAudio.Location = new System.Drawing.Point(1075, 29);
             this.btnAddAudio.Name = "btnAddAudio";
             this.btnAddAudio.Size = new System.Drawing.Size(111, 23);
             this.btnAddAudio.TabIndex = 0;
@@ -102,12 +104,72 @@ namespace T
             this.CurrentTime,
             this.Stack,
             this.btnPause,
+            this.btnReset,
             this.btnDelete});
             this.gvTimers.Location = new System.Drawing.Point(12, 110);
             this.gvTimers.MultiSelect = false;
             this.gvTimers.Name = "gvTimers";
-            this.gvTimers.Size = new System.Drawing.Size(745, 447);
+            this.gvTimers.Size = new System.Drawing.Size(844, 447);
             this.gvTimers.TabIndex = 1;
+            // 
+            // ID
+            // 
+            this.ID.HeaderText = "ID";
+            this.ID.Name = "ID";
+            this.ID.ReadOnly = true;
+            this.ID.Width = 50;
+            // 
+            // Name
+            // 
+            this.Name.HeaderText = "Nome";
+            this.Name.Name = "Name";
+            this.Name.Width = 150;
+            // 
+            // Time
+            // 
+            this.Time.HeaderText = "Tempo";
+            this.Time.Name = "Time";
+            this.Time.Width = 70;
+            // 
+            // TotalTime
+            // 
+            this.TotalTime.HeaderText = "Tempo Total";
+            this.TotalTime.Name = "TotalTime";
+            this.TotalTime.ReadOnly = true;
+            // 
+            // CurrentTime
+            // 
+            this.CurrentTime.HeaderText = "Tempo Decorrido";
+            this.CurrentTime.Name = "CurrentTime";
+            this.CurrentTime.ReadOnly = true;
+            this.CurrentTime.Width = 70;
+            // 
+            // Stack
+            // 
+            this.Stack.HeaderText = "Stack";
+            this.Stack.Name = "Stack";
+            this.Stack.Width = 60;
+            // 
+            // btnPause
+            // 
+            this.btnPause.HeaderText = "Pausar";
+            this.btnPause.Name = "btnPause";
+            this.btnPause.Text = "Pausar Audio";
+            this.btnPause.UseColumnTextForButtonValue = true;
+            // 
+            // btnReset
+            // 
+            this.btnReset.HeaderText = "Reiniciar";
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Text = "Reiniciar";
+            this.btnReset.UseColumnTextForButtonValue = true;
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.HeaderText = "Remove";
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Text = "Remover";
+            this.btnDelete.UseColumnTextForButtonValue = true;
             // 
             // ddlAudio
             // 
@@ -149,6 +211,7 @@ namespace T
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.btnResetOptionCount);
             this.groupBox1.Controls.Add(this.btnCancelar);
             this.groupBox1.Controls.Add(this.txtOldName);
             this.groupBox1.Controls.Add(this.txtOptionTime);
@@ -158,12 +221,23 @@ namespace T
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.btnSaveOption);
             this.groupBox1.Controls.Add(this.ddlAudio);
-            this.groupBox1.Location = new System.Drawing.Point(761, 277);
+            this.groupBox1.Location = new System.Drawing.Point(862, 110);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(324, 159);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Option";
+            // 
+            // btnResetOptionCount
+            // 
+            this.btnResetOptionCount.Location = new System.Drawing.Point(172, 130);
+            this.btnResetOptionCount.Name = "btnResetOptionCount";
+            this.btnResetOptionCount.Size = new System.Drawing.Size(106, 23);
+            this.btnResetOptionCount.TabIndex = 11;
+            this.btnResetOptionCount.Text = "Resetar Contagem";
+            this.btnResetOptionCount.UseVisualStyleBackColor = true;
+            this.btnResetOptionCount.Visible = false;
+            this.btnResetOptionCount.Click += new System.EventHandler(this.btnResetOptionCount_Click);
             // 
             // btnCancelar
             // 
@@ -177,7 +251,7 @@ namespace T
             // 
             // txtOldName
             // 
-            this.txtOldName.Location = new System.Drawing.Point(9, 105);
+            this.txtOldName.Location = new System.Drawing.Point(208, 105);
             this.txtOldName.Name = "txtOldName";
             this.txtOldName.Size = new System.Drawing.Size(100, 20);
             this.txtOldName.TabIndex = 9;
@@ -253,43 +327,18 @@ namespace T
             // 
             this.gvOpcoes.AllowUserToAddRows = false;
             this.gvOpcoes.AllowUserToDeleteRows = false;
-            this.gvOpcoes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.gvOpcoes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.gvOpcoes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvOpcoes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.OptionName,
             this.OptionCount,
-            this.CountTimer,
+            this.OptionTimer,
             this.OptionFile});
-            this.gvOpcoes.Location = new System.Drawing.Point(763, 110);
+            this.gvOpcoes.Location = new System.Drawing.Point(862, 275);
             this.gvOpcoes.Name = "gvOpcoes";
-            this.gvOpcoes.Size = new System.Drawing.Size(324, 150);
+            this.gvOpcoes.Size = new System.Drawing.Size(324, 282);
             this.gvOpcoes.TabIndex = 8;
-            // 
-            // OptionName
-            // 
-            this.OptionName.HeaderText = "Name";
-            this.OptionName.Name = "OptionName";
-            this.OptionName.ReadOnly = true;
-            // 
-            // OptionCount
-            // 
-            this.OptionCount.HeaderText = "Contador";
-            this.OptionCount.Name = "OptionCount";
-            this.OptionCount.ReadOnly = true;
-            this.OptionCount.Width = 60;
-            // 
-            // CountTimer
-            // 
-            this.CountTimer.HeaderText = "Tempo";
-            this.CountTimer.Name = "CountTimer";
-            this.CountTimer.ReadOnly = true;
-            this.CountTimer.Width = 60;
-            // 
-            // OptionFile
-            // 
-            this.OptionFile.HeaderText = "Arquivo";
-            this.OptionFile.Name = "OptionFile";
-            this.OptionFile.ReadOnly = true;
             // 
             // ddlAlertGroup
             // 
@@ -303,7 +352,7 @@ namespace T
             // 
             // btnAddDefAlert
             // 
-            this.btnAddDefAlert.Location = new System.Drawing.Point(390, 19);
+            this.btnAddDefAlert.Location = new System.Drawing.Point(390, 17);
             this.btnAddDefAlert.Name = "btnAddDefAlert";
             this.btnAddDefAlert.Size = new System.Drawing.Size(111, 23);
             this.btnAddDefAlert.TabIndex = 10;
@@ -344,29 +393,10 @@ namespace T
             this.groupBox3.Controls.Add(this.txtCustomName);
             this.groupBox3.Location = new System.Drawing.Point(12, 60);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(1075, 44);
+            this.groupBox3.Size = new System.Drawing.Size(1174, 44);
             this.groupBox3.TabIndex = 12;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Timer";
-            // 
-            // btnAddNewOption
-            // 
-            this.btnAddNewOption.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddNewOption.Location = new System.Drawing.Point(852, 29);
-            this.btnAddNewOption.Name = "btnAddNewOption";
-            this.btnAddNewOption.Size = new System.Drawing.Size(110, 23);
-            this.btnAddNewOption.TabIndex = 14;
-            this.btnAddNewOption.Text = "Adicionar Timer";
-            this.btnAddNewOption.UseVisualStyleBackColor = true;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(330, 20);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(35, 13);
-            this.label6.TabIndex = 8;
-            this.label6.Text = "Stack";
             // 
             // txtStack
             // 
@@ -390,63 +420,56 @@ namespace T
             0,
             0});
             // 
-            // ID
+            // label6
             // 
-            this.ID.HeaderText = "ID";
-            this.ID.Name = "ID";
-            this.ID.ReadOnly = true;
-            this.ID.Width = 50;
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(330, 20);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(35, 13);
+            this.label6.TabIndex = 8;
+            this.label6.Text = "Stack";
             // 
-            // Name
+            // btnAddNewOption
             // 
-            this.Name.HeaderText = "Nome";
-            this.Name.Name = "Name";
-            this.Name.Width = 150;
+            this.btnAddNewOption.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAddNewOption.Location = new System.Drawing.Point(951, 29);
+            this.btnAddNewOption.Name = "btnAddNewOption";
+            this.btnAddNewOption.Size = new System.Drawing.Size(110, 23);
+            this.btnAddNewOption.TabIndex = 14;
+            this.btnAddNewOption.Text = "Adicionar Timer";
+            this.btnAddNewOption.UseVisualStyleBackColor = true;
             // 
-            // Time
+            // OptionName
             // 
-            this.Time.HeaderText = "Tempo";
-            this.Time.Name = "Time";
-            this.Time.Width = 70;
+            this.OptionName.HeaderText = "Name";
+            this.OptionName.Name = "OptionName";
+            this.OptionName.ReadOnly = true;
             // 
-            // TotalTime
+            // OptionCount
             // 
-            this.TotalTime.HeaderText = "Tempo Total";
-            this.TotalTime.Name = "TotalTime";
-            this.TotalTime.ReadOnly = true;
+            this.OptionCount.HeaderText = "Contador";
+            this.OptionCount.Name = "OptionCount";
+            this.OptionCount.ReadOnly = true;
+            this.OptionCount.Width = 60;
             // 
-            // CurrentTime
+            // OptionTimer
             // 
-            this.CurrentTime.HeaderText = "Tempo Decorrido";
-            this.CurrentTime.Name = "CurrentTime";
-            this.CurrentTime.ReadOnly = true;
-            this.CurrentTime.Width = 70;
+            this.OptionTimer.HeaderText = "Tempo";
+            this.OptionTimer.Name = "OptionTimer";
+            this.OptionTimer.ReadOnly = true;
+            this.OptionTimer.Width = 60;
             // 
-            // Stack
+            // OptionFile
             // 
-            this.Stack.HeaderText = "Stack";
-            this.Stack.Name = "Stack";
-            this.Stack.Width = 60;
-            // 
-            // btnPause
-            // 
-            this.btnPause.HeaderText = "Pausar";
-            this.btnPause.Name = "btnPause";
-            this.btnPause.Text = "Pausar Audio";
-            this.btnPause.UseColumnTextForButtonValue = true;
-            // 
-            // btnDelete
-            // 
-            this.btnDelete.HeaderText = "Remove";
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Text = "Remover";
-            this.btnDelete.UseColumnTextForButtonValue = true;
+            this.OptionFile.HeaderText = "Arquivo";
+            this.OptionFile.Name = "OptionFile";
+            this.OptionFile.ReadOnly = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1097, 569);
+            this.ClientSize = new System.Drawing.Size(1196, 569);
             this.Controls.Add(this.btnAddNewOption);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -469,7 +492,6 @@ namespace T
             this.ResumeLayout(false);
 
         }
-
         #endregion
 
         private System.Windows.Forms.Button btnAddAudio;
@@ -487,10 +509,6 @@ namespace T
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DateTimePicker txtOptionTime;
         private System.Windows.Forms.DataGridView gvOpcoes;
-        private System.Windows.Forms.DataGridViewTextBoxColumn OptionName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn OptionCount;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CountTimer;
-        private System.Windows.Forms.DataGridViewTextBoxColumn OptionFile;
         private System.Windows.Forms.TextBox txtOldName;
         private System.Windows.Forms.Button btnCancelar;
         private System.Windows.Forms.ComboBox ddlAlertGroup;
@@ -499,6 +517,8 @@ namespace T
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button btnAddNewOption;
+        private System.Windows.Forms.NumericUpDown txtStack;
+        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.DataGridViewTextBoxColumn ID;
         private System.Windows.Forms.DataGridViewTextBoxColumn Name;
         private System.Windows.Forms.DataGridViewTextBoxColumn Time;
@@ -506,9 +526,13 @@ namespace T
         private System.Windows.Forms.DataGridViewTextBoxColumn CurrentTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn Stack;
         private System.Windows.Forms.DataGridViewButtonColumn btnPause;
+        private System.Windows.Forms.DataGridViewButtonColumn btnReset;
         private System.Windows.Forms.DataGridViewButtonColumn btnDelete;
-        private System.Windows.Forms.NumericUpDown txtStack;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button btnResetOptionCount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn OptionName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn OptionCount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn OptionTimer;
+        private System.Windows.Forms.DataGridViewTextBoxColumn OptionFile;
     }
 }
 
