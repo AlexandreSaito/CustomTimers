@@ -11,6 +11,11 @@ namespace T
 {
     public class Option
     {
+        public static int IndexName = 0;
+        public static int IndexCount = 0;
+        public static int IndexTime = 0;
+        public static int IndexFile = 0;
+
         protected SoundPlayer m_soundPlayer;
 
         public XElement xElementCount;
@@ -23,11 +28,10 @@ namespace T
 
         public int Count { get; set; }
 
-
-        public void AddCount()
+        public void AddCount(int quantity)
         {
             if (xElementCount == null) return;
-            Count++;
+            Count += quantity;
             xElementCount.Value = Count.ToString();
             row.Cells[1].Value = Count.ToString();
         }
@@ -47,17 +51,17 @@ namespace T
             }
         }
 
-        public void Play()
+        public void PlaySound()
         {
             if (m_soundPlayer == null)
             {
                 CreateSoundPlayer();
             }
             if (m_soundPlayer == null) return;
-            m_soundPlayer.PlayLooping();
+            m_soundPlayer.Play();
         }
 
-        public void Stop()
+        public void StopSound()
         {
             if (m_soundPlayer == null) return;
             m_soundPlayer.Stop();
@@ -71,5 +75,14 @@ namespace T
 
             return dt.ToString("HH:mm:ss");
         }
+
+        public void UpdateDataGridRow()
+        {
+            row.Cells[IndexName].Value = Name;
+            row.Cells[IndexTime].Value = TimeToString(Time);
+            row.Cells[IndexFile].Value = AudioName;
+            row.Cells[IndexCount].Value = Count;
+        }
+
     }
 }

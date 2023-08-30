@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace T
@@ -18,13 +16,17 @@ namespace T
 
         public static int IndexName = 1;
         public static int IndexTime = 2;
+        public static int IndexMaxTime = 3;
         public static int IndexCurrentTime = 3;
+        public static int IndexStackedCount = 4;
         public static List<Schedule> Schedules { get { return _schedules; } }
 
         public static void OnUpdate(Schedule schedule)
         {
             if (schedule.Row == null) return;
             schedule.Row.Cells[IndexCurrentTime].Value = Schedule.TimeToString(schedule.CurrentTime);
+            if(schedule.Time < schedule.CurrentTime)
+                schedule.Row.DefaultCellStyle.BackColor = Color.Yellow;
         }
 
         public static void OnDone(Schedule schedule)
@@ -33,8 +35,8 @@ namespace T
             {
                 schedule.Row.DefaultCellStyle.BackColor = Color.Green;
             }
-            schedule.Option.Play();
-            schedule.Option.AddCount();
+            schedule.Option.AddCount(schedule.Count);
+            schedule.Option.PlaySound();
         }
 
 
@@ -72,7 +74,7 @@ namespace T
                 if (item.Done) continue;
                 item.CurrentTime += 1;
                 OnUpdate(item);
-                if (item.CurrentTime >= item.Time)
+                if (item.CurrentTime >= item.MaxTimer)
                 {
                     item.Done = true;
                     OnDone(item);
@@ -88,14 +90,27 @@ namespace T
 
         private string m_name = "";
         private int m_time = 0;
+        private int m_count = 1;
         public int ID { get; protected set; }
         public Option Option { get; }
         public string Name { get { return string.IsNullOrEmpty(m_name) ? Option.Name : m_name; } set { m_name = value; } }
         public int Time { get { return m_time == 0 ? Option.Time : m_time; } set { m_time = value; } }
+        public int MaxTimer { get { return Time * Count; } }
         public int CurrentTime { get; set; }
+
+        public int Count { get { return m_count; } set { if (value < 1) value = 1; m_count = value; } }
 
         public bool Done { get; set; }
         public DataGridViewRow Row { get; set; }
+
+        public void UpdateDataGridViewRow()
+        {
+            Row.Cells[IndexName].Value = this.Name;
+            Row.Cells[IndexTime].Value = Schedule.TimeToString(this.Time);
+            Row.Cells[IndexMaxTime].Value = Schedule.TimeToString(this.MaxTimer);
+            Row.Cells[IndexCurrentTime].Value = Schedule.TimeToString(this.CurrentTime);
+            Row.Cells[IndexStackedCount].Value = this.Count;
+        }
 
     }
 }
