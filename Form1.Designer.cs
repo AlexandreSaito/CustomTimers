@@ -478,7 +478,7 @@ namespace T
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.gvTimers);
             this.Controls.Add(this.btnAddAudio);
-            this.Name = "Form1";
+            //this.Name = "Form1";
             this.Text = "Alertas";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.gvTimers)).EndInit();

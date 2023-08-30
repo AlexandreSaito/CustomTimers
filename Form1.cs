@@ -54,6 +54,8 @@ namespace T
 
         protected void LoadAlertDefinition(string definition)
         {
+            var list = Schedule.Schedules.GroupBy(x => x.Option).Select(x => x.Key).Distinct();
+            foreach (var item in list) item.StopSound();
             gvTimers.Rows.Clear();
             gvOpcoes.Rows.Clear();
             OM = null;

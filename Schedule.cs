@@ -46,8 +46,10 @@ namespace T
             {
                 Timer = new System.Timers.Timer(1000);
                 Timer.Elapsed += Timer_Elapsed;
+                Timer.Start();
             }
-            Timer.Start();
+            _schedules.Clear();
+            _maxId = 0;
         }
 
         public static void AddSchedule(Schedule schedule)
