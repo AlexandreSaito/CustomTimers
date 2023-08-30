@@ -56,6 +56,10 @@ namespace T
             this.btnSaveOption = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.gvOpcoes = new System.Windows.Forms.DataGridView();
+            this.OptionName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OptionCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OptionTimer = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OptionFile = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ddlAlertGroup = new System.Windows.Forms.ComboBox();
             this.btnAddDefAlert = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -64,10 +68,6 @@ namespace T
             this.txtStack = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
             this.btnAddNewOption = new System.Windows.Forms.Button();
-            this.OptionName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OptionCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OptionTimer = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OptionFile = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.gvTimers)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvOpcoes)).BeginInit();
@@ -340,6 +340,32 @@ namespace T
             this.gvOpcoes.Size = new System.Drawing.Size(324, 282);
             this.gvOpcoes.TabIndex = 8;
             // 
+            // OptionName
+            // 
+            this.OptionName.HeaderText = "Name";
+            this.OptionName.Name = "OptionName";
+            this.OptionName.ReadOnly = true;
+            // 
+            // OptionCount
+            // 
+            this.OptionCount.HeaderText = "Contador";
+            this.OptionCount.Name = "OptionCount";
+            this.OptionCount.ReadOnly = true;
+            this.OptionCount.Width = 60;
+            // 
+            // OptionTimer
+            // 
+            this.OptionTimer.HeaderText = "Tempo";
+            this.OptionTimer.Name = "OptionTimer";
+            this.OptionTimer.ReadOnly = true;
+            this.OptionTimer.Width = 60;
+            // 
+            // OptionFile
+            // 
+            this.OptionFile.HeaderText = "Arquivo";
+            this.OptionFile.Name = "OptionFile";
+            this.OptionFile.ReadOnly = true;
+            // 
             // ddlAlertGroup
             // 
             this.ddlAlertGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -438,32 +464,7 @@ namespace T
             this.btnAddNewOption.TabIndex = 14;
             this.btnAddNewOption.Text = "Adicionar Timer";
             this.btnAddNewOption.UseVisualStyleBackColor = true;
-            // 
-            // OptionName
-            // 
-            this.OptionName.HeaderText = "Name";
-            this.OptionName.Name = "OptionName";
-            this.OptionName.ReadOnly = true;
-            // 
-            // OptionCount
-            // 
-            this.OptionCount.HeaderText = "Contador";
-            this.OptionCount.Name = "OptionCount";
-            this.OptionCount.ReadOnly = true;
-            this.OptionCount.Width = 60;
-            // 
-            // OptionTimer
-            // 
-            this.OptionTimer.HeaderText = "Tempo";
-            this.OptionTimer.Name = "OptionTimer";
-            this.OptionTimer.ReadOnly = true;
-            this.OptionTimer.Width = 60;
-            // 
-            // OptionFile
-            // 
-            this.OptionFile.HeaderText = "Arquivo";
-            this.OptionFile.Name = "OptionFile";
-            this.OptionFile.ReadOnly = true;
+            this.btnAddNewOption.Visible = false;
             // 
             // Form1
             // 
@@ -477,7 +478,7 @@ namespace T
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.gvTimers);
             this.Controls.Add(this.btnAddAudio);
-            //this.Name = "Form1";
+            this.Name = "Form1";
             this.Text = "Alertas";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.gvTimers)).EndInit();
