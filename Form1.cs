@@ -15,7 +15,7 @@ namespace T
         protected int IndexBtnDeleteTimer = 4;
 
         OptionManager OM;
-        AudioOptions AudioOptions = new AudioOptions();
+        readonly AudioOptions AudioOptions = new AudioOptions();
 
         public Form1()
         {
@@ -74,6 +74,11 @@ namespace T
                 gvTimers.Rows.Remove(selected.Row);
                 Schedule.RemoveSchedule(selected);
                 selected.Option.StopSound();
+                if (!selected.Done)
+                {
+                    int count = selected.Count > 0 ? selected.CurrentTime / selected.Time : 0;
+                    if (count > 0) selected.Option.AddCount(count);
+                }
             }
             else if (e.ColumnIndex == IndexBtnPauseTimer)
             {
