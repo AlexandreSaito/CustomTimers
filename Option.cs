@@ -23,10 +23,10 @@ namespace T
 
         public int Count { get; set; }
 
-        public void AddCount()
+        public void AddCount(int quantity)
         {
             if (xElementCount == null) return;
-            Count++;
+            Count += quantity;
             xElementCount.Value = Count.ToString();
             row.Cells[1].Value = Count.ToString();
         }

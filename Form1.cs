@@ -10,6 +10,7 @@ namespace T
         // Packages: NAudio
         protected const string AudioFilters = "Video Files (*.mp4)|*.mp4|Wav Files (*.wav)|*.wav";
 
+        protected int IndexBtnPauseTimer = 4;
         protected int IndexBtnDeleteTimer = 4;
 
         OptionManager OM;
@@ -27,20 +28,17 @@ namespace T
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            gvTimers.Columns.Insert(gvTimers.Columns.Count, new DataGridViewButtonColumn()
-            {
-                Name = "btnDelete",
-                Text = "Remove"
-            });
-
             gvTimers.CellValueChanged += GvTimers_CellValueChanged;
             gvTimers.CellClick += GvTimers_CellClick;
             gvOpcoes.CellClick += GvOpcoes_CellClick;
 
             if (gvTimers.Columns["Name"] != null) Schedule.IndexName = gvTimers.Columns["Name"].Index;
             if (gvTimers.Columns["Time"] != null) Schedule.IndexTime = gvTimers.Columns["Time"].Index;
+            if (gvTimers.Columns["TotalTime"] != null) Schedule.IndexMaxTime = gvTimers.Columns["TotalTime"].Index;
             if (gvTimers.Columns["CurrentTime"] != null) Schedule.IndexCurrentTime = gvTimers.Columns["CurrentTime"].Index;
+            if (gvTimers.Columns["Stack"] != null) Schedule.IndexStackedCount = gvTimers.Columns["Stack"].Index;
             if (gvTimers.Columns["btnDelete"] != null) IndexBtnDeleteTimer = gvTimers.Columns["btnDelete"].Index;
+            if (gvTimers.Columns["btnPause"] != null) IndexBtnPauseTimer = gvTimers.Columns["btnPause"].Index;
 
             string lastSelected = OptionManager.LastSelected();
             FillDDLAlertGroup(lastSelected);
@@ -70,6 +68,13 @@ namespace T
                 Schedule.RemoveSchedule(selected);
                 selected.Option.StopSound();
             }
+            if (e.ColumnIndex == IndexBtnPauseTimer)
+            {
+                Schedule selected = Schedule.Schedules.FirstOrDefault(x => x.Row.Index == e.RowIndex);
+                if (selected == null) return;
+
+                selected.Option.StopSound();
+            }
         }
 
         private void GvTimers_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -83,13 +88,13 @@ namespace T
             }
             else if (e.ColumnIndex == Schedule.IndexTime)
             {
-                if(!int.TryParse(selected.Row.Cells[Schedule.IndexTime].Value.ToString().Replace(":", ""), out int result))
+                if (!int.TryParse(selected.Row.Cells[Schedule.IndexTime].Value.ToString().Replace(":", ""), out int result))
                 {
                     Alert("O valor não pode conter letrar ou caracteres especiais exceto ':'");
                     return;
                 }
                 string[] value = selected.Row.Cells[Schedule.IndexTime].Value.ToString().Split(':');
-                if(value.Length > 3)
+                if (value.Length > 3)
                 {
                     Alert("O valor deve conter no maximo hora:minuto:segundo");
                     return;
@@ -108,8 +113,17 @@ namespace T
                     seconds = (Convert.ToInt32(value[0]) * 60 + Convert.ToInt32(value[1])) * 60 + Convert.ToInt32(value[2]);
                 }
                 selected.Time = seconds;
-                selected.Row.Cells[Schedule.IndexTime].Value = Schedule.TimeToString(selected.Time);
             }
+            else if (e.ColumnIndex == Schedule.IndexStackedCount)
+            {
+                if (!int.TryParse(selected.Row.Cells[Schedule.IndexStackedCount].Value.ToString().Replace(":", ""), out int result))
+                {
+                    Alert("O valor não pode conter letrar ou caracteres especiais.");
+                    return;
+                }
+                selected.Count = result;
+            }
+            selected.UpdateDataGridViewRow();
         }
 
         protected int ConvertTimeStringToSeconds(string time)
@@ -149,7 +163,7 @@ namespace T
             }
         }
 
-        public void AddTimer(string name, string customName)
+        public void AddTimer(string name, string customName, int stack)
         {
             Option option = OM.GetOption(name);
 
@@ -162,11 +176,13 @@ namespace T
             Schedule schedule = new Schedule(option)
             {
                 Name = customName,
+                Count = stack
             };
 
-            DataGridViewRow row = gvTimers.Rows[gvTimers.Rows.Add(schedule.ID, schedule.Name, Schedule.TimeToString(schedule.Time), Schedule.TimeToString(schedule.CurrentTime))];
-
+            //DataGridViewRow row = gvTimers.Rows[gvTimers.Rows.Add(schedule.ID, schedule.Name, Schedule.TimeToString(schedule.Time), Schedule.TimeToString(schedule.CurrentTime))];
+            DataGridViewRow row = gvTimers.Rows[gvTimers.Rows.Add(schedule.ID, schedule.Name)];
             schedule.Row = row;
+            schedule.UpdateDataGridViewRow();
             Schedule.AddSchedule(schedule);
         }
 
@@ -189,7 +205,8 @@ namespace T
             string name = ddlOption.SelectedItem.ToString();
             if (string.IsNullOrEmpty(name)) return;
             string customName = txtCustomName.Text;
-            AddTimer(name, customName);
+            int stack = (int)txtStack.Value;
+            AddTimer(name, customName, stack);
         }
 
         private void btnSaveOption_Click(object sender, EventArgs e)
