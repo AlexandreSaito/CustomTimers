@@ -56,8 +56,10 @@ namespace T
         {
             var list = Schedule.Schedules.GroupBy(x => x.Option).Select(x => x.Key).Distinct();
             foreach (var item in list) item.StopSound();
+            ClearOptionsFields();
             gvTimers.Rows.Clear();
             gvOpcoes.Rows.Clear();
+            OM.Save();
             OM = null;
             OM = new OptionManager(definition, gvOpcoes);
             OM.Load();
