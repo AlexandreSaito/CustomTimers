@@ -25,7 +25,7 @@ namespace T
         {
             if (schedule.Row == null) return;
             schedule.Row.Cells[IndexCurrentTime].Value = Schedule.TimeToString(schedule.CurrentTime);
-            if(schedule.Time < schedule.CurrentTime)
+            if (schedule.Time < schedule.CurrentTime)
                 schedule.Row.DefaultCellStyle.BackColor = Color.Yellow;
         }
 
@@ -73,7 +73,7 @@ namespace T
             Schedules.CopyTo(list);
             foreach (var item in list)
             {
-                if (item.Done) continue;
+                if (item.Done || item.Paused) continue;
                 item.CurrentTime += 1;
                 OnUpdate(item);
                 if (item.CurrentTime >= item.MaxTimer)
@@ -93,6 +93,8 @@ namespace T
         private string m_name = "";
         private int m_time = 0;
         private int m_count = 1;
+        private bool m_paused;
+
         public int ID { get; protected set; }
         public Option Option { get; }
         public string Name { get { return string.IsNullOrEmpty(m_name) ? Option.Name : m_name; } set { m_name = value; } }
@@ -103,6 +105,14 @@ namespace T
         public int Count { get { return m_count; } set { if (value < 1) value = 1; m_count = value; } }
 
         public bool Done { get; set; }
+        public bool Paused
+        {
+            get { return m_paused; }
+            set
+            {
+                m_paused = value; if (Row != null) { if (m_paused) Row.DefaultCellStyle.BackColor = Color.Gray; else Row.DefaultCellStyle.BackColor = Color.Empty; }
+            }
+        }
         public DataGridViewRow Row { get; set; }
 
         public void UpdateDataGridViewRow()
