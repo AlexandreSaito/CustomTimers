@@ -29,6 +29,8 @@ namespace T
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            chkPlayAlertInLoop.Checked = CustomConfiguration.Singleton.PlayAlertInLoop;
+
             gvTimers.CellValueChanged += GvTimers_CellValueChanged;
             gvTimers.CellClick += GvTimers_CellClick;
             gvOpcoes.CellDoubleClick += GvOpcoes_CellDoubleClick;
@@ -38,6 +40,7 @@ namespace T
             Schedule.IndexMaxTime = gvTimers.Columns["TotalTime"].Index;
             Schedule.IndexCurrentTime = gvTimers.Columns["CurrentTime"].Index;
             Schedule.IndexStackedCount = gvTimers.Columns["Stack"].Index;
+            Schedule.IndexCount = gvTimers.Columns["Count"].Index;
             IndexBtnDeleteTimer = gvTimers.Columns["btnDelete"].Index;
             IndexBtnPauseTimer = gvTimers.Columns["btnPause"].Index;
             IndexBtnResetTimer = gvTimers.Columns["btnReset"].Index;
@@ -351,6 +354,12 @@ namespace T
         private void ddlAlertGroup_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadAlertDefinition(ddlAlertGroup.SelectedItem.ToString());
+        }
+
+        private void chkPlayAlertInLoop_CheckedChanged(object sender, EventArgs e)
+        {
+            CustomConfiguration.Singleton.PlayAlertInLoop = chkPlayAlertInLoop.Checked;
+            CustomConfiguration.Singleton.Save();
         }
     }
 }

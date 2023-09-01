@@ -7,7 +7,7 @@ namespace T
     {
         protected const string configsFilePath = "./configs";
 
-        protected const string configLine = "{0}: {1}";
+        protected const string configLine = "{0}: {1}\n";
 
         private static CustomConfiguration _customConfiguration;
         public static CustomConfiguration Singleton
@@ -22,6 +22,7 @@ namespace T
         }
 
         public string LastSelected { get; set; }
+        public bool PlayAlertInLoop { get; set; }
 
         public CustomConfiguration()
         {
@@ -35,6 +36,7 @@ namespace T
             }
 
             LastSelected = GetProperty(configs, "LAST_SELECTED", "Default");
+            PlayAlertInLoop = GetProperty(configs, "PLAY_LOOP", "FALSE") == "TRUE";
         }
 
         protected string GetProperty(string[] configs, string prop, string defaultValue = null)
@@ -48,6 +50,7 @@ namespace T
         public void Save()
         {
             string configs = string.Format(configLine, "LAST_SELECTED", LastSelected);
+            configs += string.Format(configLine, "PLAY_LOOP", PlayAlertInLoop ? "TRUE" : "FALSE");
             File.WriteAllText(configsFilePath, configs);
         }
 

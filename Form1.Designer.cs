@@ -62,6 +62,7 @@ namespace T
             this.btnAddNewOption = new System.Windows.Forms.Button();
             this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Count = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TotalTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CurrentTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -69,6 +70,7 @@ namespace T
             this.btnPause = new System.Windows.Forms.DataGridViewButtonColumn();
             this.btnReset = new System.Windows.Forms.DataGridViewButtonColumn();
             this.btnDelete = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.chkPlayAlertInLoop = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.gvTimers)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtOptionCount)).BeginInit();
@@ -101,6 +103,7 @@ namespace T
             this.gvTimers.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ID,
             this.Name,
+            this.Count,
             this.Time,
             this.TotalTime,
             this.CurrentTime,
@@ -428,6 +431,13 @@ namespace T
             this.Name.Name = "Name";
             this.Name.Width = 150;
             // 
+            // Count
+            // 
+            this.Count.HeaderText = "Contador";
+            this.Count.Name = "Count";
+            this.Count.ReadOnly = true;
+            this.Count.Width = 70;
+            // 
             // Time
             // 
             this.Time.HeaderText = "Tempo";
@@ -474,11 +484,23 @@ namespace T
             this.btnDelete.Text = "Remover";
             this.btnDelete.UseColumnTextForButtonValue = true;
             // 
+            // chkPlayAlertInLoop
+            // 
+            this.chkPlayAlertInLoop.AutoSize = true;
+            this.chkPlayAlertInLoop.Location = new System.Drawing.Point(530, 29);
+            this.chkPlayAlertInLoop.Name = "chkPlayAlertInLoop";
+            this.chkPlayAlertInLoop.Size = new System.Drawing.Size(123, 17);
+            this.chkPlayAlertInLoop.TabIndex = 15;
+            this.chkPlayAlertInLoop.Text = "Tocar alerta em loop";
+            this.chkPlayAlertInLoop.UseVisualStyleBackColor = true;
+            this.chkPlayAlertInLoop.CheckedChanged += new System.EventHandler(this.chkPlayAlertInLoop_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1196, 569);
+            this.Controls.Add(this.chkPlayAlertInLoop);
             this.Controls.Add(this.btnAddNewOption);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -500,6 +522,7 @@ namespace T
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtStack)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
         #endregion
@@ -537,6 +560,7 @@ namespace T
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.DataGridViewTextBoxColumn ID;
         private System.Windows.Forms.DataGridViewTextBoxColumn Name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Count;
         private System.Windows.Forms.DataGridViewTextBoxColumn Time;
         private System.Windows.Forms.DataGridViewTextBoxColumn TotalTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn CurrentTime;
@@ -544,6 +568,7 @@ namespace T
         private System.Windows.Forms.DataGridViewButtonColumn btnPause;
         private System.Windows.Forms.DataGridViewButtonColumn btnReset;
         private System.Windows.Forms.DataGridViewButtonColumn btnDelete;
+        private System.Windows.Forms.CheckBox chkPlayAlertInLoop;
     }
 }
 

@@ -19,6 +19,7 @@ namespace T
         public static int IndexMaxTime = 3;
         public static int IndexCurrentTime = 3;
         public static int IndexStackedCount = 4;
+        public static int IndexCount = 4;
         public static List<Schedule> Schedules { get { return _schedules; } }
 
         public static void OnUpdate(Schedule schedule)
@@ -37,6 +38,11 @@ namespace T
             }
             schedule.Option.AddCount(schedule.Count);
             schedule.Option.PlaySound();
+            var list = Schedules.Where(x => x.Option == schedule.Option);
+            foreach (var item in list)
+            {
+                item.UpdateDataGridViewRow();
+            }
         }
 
 
@@ -122,6 +128,7 @@ namespace T
             Row.Cells[IndexMaxTime].Value = Schedule.TimeToString(this.MaxTimer);
             Row.Cells[IndexCurrentTime].Value = Schedule.TimeToString(this.CurrentTime);
             Row.Cells[IndexStackedCount].Value = this.Count;
+            Row.Cells[IndexCount].Value = this.Option.Count;
         }
 
     }

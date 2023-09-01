@@ -58,7 +58,8 @@ namespace T
                 CreateSoundPlayer();
             }
             if (m_soundPlayer == null) return;
-            m_soundPlayer.Play();
+            if(CustomConfiguration.Singleton.PlayAlertInLoop) m_soundPlayer.PlayLooping();
+            else m_soundPlayer.Play();
         }
 
         public void StopSound()
