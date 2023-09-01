@@ -12,7 +12,6 @@ namespace T
     {
         protected static Type int_type = typeof(int);
 
-        public const string PredefsFolderPath = "./predefs";
         protected static Type optionType = typeof(Option);
         protected static PropertyInfo[] properties = optionType.GetProperties();
 
@@ -25,24 +24,23 @@ namespace T
 
         public List<Option> Options { get; protected set; } = new List<Option>();
 
-        protected string fileName;
+        protected string filePath;
         protected DataGridView grid;
 
         public OptionManager(string predefName, DataGridView grid)
         {
             this.grid = grid;
             CustomConfiguration.Singleton.LastSelected = predefName;
-            fileName = PredefsFolderPath + "/" + predefName + ".xml";
+            filePath = CustomConfiguration.PredefsFolderPath + "/" + predefName + ".xml";
+            if (!Directory.Exists(CustomConfiguration.PredefsFolderPath)) Directory.CreateDirectory(CustomConfiguration.PredefsFolderPath);
 
-            if (!Directory.Exists(PredefsFolderPath)) Directory.CreateDirectory(PredefsFolderPath);
-
-            if (!File.Exists(fileName))
+            if (!File.Exists(filePath))
             {
                 m_document = new XDocument();
                 m_document.Add(new XElement("predefs"));
                 return;
             }
-            m_document = XDocument.Load(fileName);
+            m_document = XDocument.Load(filePath);
         }
 
         public void Load()
@@ -155,7 +153,7 @@ namespace T
 
         public void Save()
         {
-            m_document.Save(fileName);
+            m_document.Save(filePath);
         }
 
         ~OptionManager()

@@ -19,14 +19,14 @@ namespace T
         public static int IndexMaxTime = 3;
         public static int IndexCurrentTime = 3;
         public static int IndexStackedCount = 4;
+        public static int IndexCount = 4;
         public static List<Schedule> Schedules { get { return _schedules; } }
 
         public static void OnUpdate(Schedule schedule)
         {
             if (schedule.Row == null) return;
             schedule.Row.Cells[IndexCurrentTime].Value = Schedule.TimeToString(schedule.CurrentTime);
-            if(schedule.Time < schedule.CurrentTime)
-                schedule.Row.DefaultCellStyle.BackColor = Color.Yellow;
+            if (schedule.Time < schedule.CurrentTime) schedule.Row.DefaultCellStyle.BackColor = Color.Yellow;
         }
 
         public static void OnDone(Schedule schedule)
@@ -37,6 +37,11 @@ namespace T
             }
             schedule.Option.AddCount(schedule.Count);
             schedule.Option.PlaySound();
+            var list = Schedules.Where(x => x.Option == schedule.Option);
+            foreach (var item in list)
+            {
+                item.UpdateDataGridViewRow();
+            }
         }
 
 
@@ -46,8 +51,10 @@ namespace T
             {
                 Timer = new System.Timers.Timer(1000);
                 Timer.Elapsed += Timer_Elapsed;
+                Timer.Start();
             }
-            Timer.Start();
+            _schedules.Clear();
+            _maxId = 0;
         }
 
         public static void AddSchedule(Schedule schedule)
@@ -71,7 +78,7 @@ namespace T
             Schedules.CopyTo(list);
             foreach (var item in list)
             {
-                if (item.Done) continue;
+                if (item.Done || item.Paused) continue;
                 item.CurrentTime += 1;
                 OnUpdate(item);
                 if (item.CurrentTime >= item.MaxTimer)
@@ -91,6 +98,8 @@ namespace T
         private string m_name = "";
         private int m_time = 0;
         private int m_count = 1;
+        private bool m_paused;
+
         public int ID { get; protected set; }
         public Option Option { get; }
         public string Name { get { return string.IsNullOrEmpty(m_name) ? Option.Name : m_name; } set { m_name = value; } }
@@ -101,6 +110,14 @@ namespace T
         public int Count { get { return m_count; } set { if (value < 1) value = 1; m_count = value; } }
 
         public bool Done { get; set; }
+        public bool Paused
+        {
+            get { return m_paused; }
+            set
+            {
+                m_paused = value; if (Row != null) { if (m_paused) Row.DefaultCellStyle.BackColor = Color.Gray; else Row.DefaultCellStyle.BackColor = Color.Empty; }
+            }
+        }
         public DataGridViewRow Row { get; set; }
 
         public void UpdateDataGridViewRow()
@@ -110,6 +127,7 @@ namespace T
             Row.Cells[IndexMaxTime].Value = Schedule.TimeToString(this.MaxTimer);
             Row.Cells[IndexCurrentTime].Value = Schedule.TimeToString(this.CurrentTime);
             Row.Cells[IndexStackedCount].Value = this.Count;
+            Row.Cells[IndexCount].Value = this.Option.Count;
         }
 
     }

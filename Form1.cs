@@ -29,6 +29,8 @@ namespace T
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            chkPlayAlertInLoop.Checked = CustomConfiguration.Singleton.PlayAlertInLoop;
+
             gvTimers.CellValueChanged += GvTimers_CellValueChanged;
             gvTimers.CellClick += GvTimers_CellClick;
             gvOpcoes.CellDoubleClick += GvOpcoes_CellDoubleClick;
@@ -38,6 +40,7 @@ namespace T
             Schedule.IndexMaxTime = gvTimers.Columns["TotalTime"].Index;
             Schedule.IndexCurrentTime = gvTimers.Columns["CurrentTime"].Index;
             Schedule.IndexStackedCount = gvTimers.Columns["Stack"].Index;
+            Schedule.IndexCount = gvTimers.Columns["Count"].Index;
             IndexBtnDeleteTimer = gvTimers.Columns["btnDelete"].Index;
             IndexBtnPauseTimer = gvTimers.Columns["btnPause"].Index;
             IndexBtnResetTimer = gvTimers.Columns["btnReset"].Index;
@@ -48,14 +51,18 @@ namespace T
             Option.IndexCount = gvOpcoes.Columns["OptionCount"].Index;
 
             string lastSelected = OptionManager.LastSelected();
-            FillDDLAlertGroup(lastSelected);
             LoadAlertDefinition(lastSelected);
+            FillDDLAlertGroup(lastSelected);
         }
 
         protected void LoadAlertDefinition(string definition)
         {
+            var list = Schedule.Schedules.GroupBy(x => x.Option).Select(x => x.Key).Distinct();
+            foreach (var item in list) item.StopSound();
+            ClearOptionsFields();
             gvTimers.Rows.Clear();
             gvOpcoes.Rows.Clear();
+            if (OM != null) OM.Save();
             OM = null;
             OM = new OptionManager(definition, gvOpcoes);
             OM.Load();
@@ -85,7 +92,15 @@ namespace T
                 Schedule selected = Schedule.Schedules.FirstOrDefault(x => x.Row.Index == e.RowIndex);
                 if (selected == null) return;
 
-                selected.Option.StopSound();
+                if (selected.Done) selected.Option.StopSound();
+                else
+                {
+                    selected.Paused = !selected.Paused;
+                    DataGridViewButtonCell button = (DataGridViewButtonCell)gvTimers.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                    button.UseColumnTextForButtonValue = !selected.Paused;
+                    if (selected.Paused) button.Value = "Retomar";
+                    else button.Value = "Pausar";
+                }
             }
             else if (e.ColumnIndex == IndexBtnResetTimer)
             {
@@ -157,13 +172,12 @@ namespace T
         protected void FillDDLAlertGroup(string selected)
         {
             ddlAlertGroup.Items.Clear();
-            DirectoryInfo directory = new DirectoryInfo(OptionManager.PredefsFolderPath);
+            DirectoryInfo directory = new DirectoryInfo(CustomConfiguration.PredefsFolderPath);
             var files = directory.GetFiles();
             foreach (var item in files)
             {
                 ddlAlertGroup.Items.Add(item.Name.Replace(".xml", ""));
             }
-
             ddlAlertGroup.SelectedIndex = ddlAlertGroup.Items.IndexOf(selected);
         }
 
@@ -241,6 +255,7 @@ namespace T
 
             string name = txtOptionName.Text;
             int time = ConvertTimeStringToSeconds(txtOptionTime.Text);
+            int count = (int)txtOptionCount.Value;
             string fileName = ddlAudio.SelectedItem.ToString();
 
             if (string.IsNullOrEmpty(name))
@@ -266,6 +281,7 @@ namespace T
                 option.Name = name;
                 option.Time = time;
                 option.AudioName = fileName;
+                option.Count = count;
 
                 OM.EditItem(txtOldName.Text, option);
 
@@ -307,7 +323,7 @@ namespace T
             txtOptionName.Text = option.Name;
             txtOptionTime.Text = option.TimeToString(option.Time);
             ddlAudio.SelectedIndex = ddlAudio.Items.IndexOf(option.AudioName);
-            btnResetOptionCount.Visible = true;
+            txtOptionCount.Value = option.Count;
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
@@ -320,7 +336,7 @@ namespace T
             txtOldName.Text = "";
             txtOptionName.Text = "";
             txtOptionTime.Text = "00:00:00";
-            btnResetOptionCount.Visible = false;
+            txtOptionCount.Value = 0;
         }
 
         private void btnAddDefAlert_Click(object sender, EventArgs e)
@@ -339,20 +355,10 @@ namespace T
             LoadAlertDefinition(ddlAlertGroup.SelectedItem.ToString());
         }
 
-        private void btnResetOptionCount_Click(object sender, EventArgs e)
+        private void chkPlayAlertInLoop_CheckedChanged(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(txtOldName.Text))
-            {
-                var option = OM.GetOption(txtOldName.Text);
-                if (option == null)
-                {
-                    return;
-                }
-
-                option.Count = 0;
-                option.UpdateDataGridRow();
-                ClearOptionsFields();
-            }
+            CustomConfiguration.Singleton.PlayAlertInLoop = chkPlayAlertInLoop.Checked;
+            CustomConfiguration.Singleton.Save();
         }
     }
 }

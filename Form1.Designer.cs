@@ -31,21 +31,13 @@ namespace T
         {
             this.btnAddAudio = new System.Windows.Forms.Button();
             this.gvTimers = new System.Windows.Forms.DataGridView();
-            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TotalTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CurrentTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Stack = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnPause = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.btnReset = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.btnDelete = new System.Windows.Forms.DataGridViewButtonColumn();
             this.ddlAudio = new System.Windows.Forms.ComboBox();
             this.ddlOption = new System.Windows.Forms.ComboBox();
             this.btnAddTimer = new System.Windows.Forms.Button();
             this.txtCustomName = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.btnResetOptionCount = new System.Windows.Forms.Button();
+            this.txtOptionCount = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
             this.btnCancelar = new System.Windows.Forms.Button();
             this.txtOldName = new System.Windows.Forms.TextBox();
             this.txtOptionTime = new System.Windows.Forms.DateTimePicker();
@@ -68,8 +60,20 @@ namespace T
             this.txtStack = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
             this.btnAddNewOption = new System.Windows.Forms.Button();
+            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Count = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TotalTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CurrentTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Stack = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnPause = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.btnReset = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.btnDelete = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.chkPlayAlertInLoop = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.gvTimers)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtOptionCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvOpcoes)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -99,6 +103,7 @@ namespace T
             this.gvTimers.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ID,
             this.Name,
+            this.Count,
             this.Time,
             this.TotalTime,
             this.CurrentTime,
@@ -112,70 +117,11 @@ namespace T
             this.gvTimers.Size = new System.Drawing.Size(844, 447);
             this.gvTimers.TabIndex = 1;
             // 
-            // ID
-            // 
-            this.ID.HeaderText = "ID";
-            this.ID.Name = "ID";
-            this.ID.ReadOnly = true;
-            this.ID.Width = 50;
-            // 
-            // Name
-            // 
-            this.Name.HeaderText = "Nome";
-            this.Name.Name = "Name";
-            this.Name.Width = 150;
-            // 
-            // Time
-            // 
-            this.Time.HeaderText = "Tempo";
-            this.Time.Name = "Time";
-            this.Time.Width = 70;
-            // 
-            // TotalTime
-            // 
-            this.TotalTime.HeaderText = "Tempo Total";
-            this.TotalTime.Name = "TotalTime";
-            this.TotalTime.ReadOnly = true;
-            // 
-            // CurrentTime
-            // 
-            this.CurrentTime.HeaderText = "Tempo Decorrido";
-            this.CurrentTime.Name = "CurrentTime";
-            this.CurrentTime.ReadOnly = true;
-            this.CurrentTime.Width = 70;
-            // 
-            // Stack
-            // 
-            this.Stack.HeaderText = "Stack";
-            this.Stack.Name = "Stack";
-            this.Stack.Width = 60;
-            // 
-            // btnPause
-            // 
-            this.btnPause.HeaderText = "Pausar";
-            this.btnPause.Name = "btnPause";
-            this.btnPause.Text = "Pausar Audio";
-            this.btnPause.UseColumnTextForButtonValue = true;
-            // 
-            // btnReset
-            // 
-            this.btnReset.HeaderText = "Reiniciar";
-            this.btnReset.Name = "btnReset";
-            this.btnReset.Text = "Reiniciar";
-            this.btnReset.UseColumnTextForButtonValue = true;
-            // 
-            // btnDelete
-            // 
-            this.btnDelete.HeaderText = "Remove";
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Text = "Remover";
-            this.btnDelete.UseColumnTextForButtonValue = true;
-            // 
             // ddlAudio
             // 
             this.ddlAudio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlAudio.FormattingEnabled = true;
-            this.ddlAudio.Location = new System.Drawing.Point(66, 78);
+            this.ddlAudio.Location = new System.Drawing.Point(66, 51);
             this.ddlAudio.Name = "ddlAudio";
             this.ddlAudio.Size = new System.Drawing.Size(242, 21);
             this.ddlAudio.TabIndex = 2;
@@ -211,7 +157,8 @@ namespace T
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.btnResetOptionCount);
+            this.groupBox1.Controls.Add(this.txtOptionCount);
+            this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.btnCancelar);
             this.groupBox1.Controls.Add(this.txtOldName);
             this.groupBox1.Controls.Add(this.txtOptionTime);
@@ -228,16 +175,21 @@ namespace T
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Option";
             // 
-            // btnResetOptionCount
+            // txtOptionCount
             // 
-            this.btnResetOptionCount.Location = new System.Drawing.Point(172, 130);
-            this.btnResetOptionCount.Name = "btnResetOptionCount";
-            this.btnResetOptionCount.Size = new System.Drawing.Size(106, 23);
-            this.btnResetOptionCount.TabIndex = 11;
-            this.btnResetOptionCount.Text = "Resetar Contagem";
-            this.btnResetOptionCount.UseVisualStyleBackColor = true;
-            this.btnResetOptionCount.Visible = false;
-            this.btnResetOptionCount.Click += new System.EventHandler(this.btnResetOptionCount_Click);
+            this.txtOptionCount.Location = new System.Drawing.Point(198, 80);
+            this.txtOptionCount.Name = "txtOptionCount";
+            this.txtOptionCount.Size = new System.Drawing.Size(110, 20);
+            this.txtOptionCount.TabIndex = 13;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(141, 82);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(55, 13);
+            this.label7.TabIndex = 12;
+            this.label7.Text = "Contagem";
             // 
             // btnCancelar
             // 
@@ -251,7 +203,7 @@ namespace T
             // 
             // txtOldName
             // 
-            this.txtOldName.Location = new System.Drawing.Point(208, 105);
+            this.txtOldName.Location = new System.Drawing.Point(10, 105);
             this.txtOldName.Name = "txtOldName";
             this.txtOldName.Size = new System.Drawing.Size(100, 20);
             this.txtOldName.TabIndex = 9;
@@ -261,16 +213,16 @@ namespace T
             // txtOptionTime
             // 
             this.txtOptionTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.txtOptionTime.Location = new System.Drawing.Point(66, 52);
+            this.txtOptionTime.Location = new System.Drawing.Point(66, 79);
             this.txtOptionTime.Name = "txtOptionTime";
-            this.txtOptionTime.Size = new System.Drawing.Size(242, 20);
+            this.txtOptionTime.Size = new System.Drawing.Size(69, 20);
             this.txtOptionTime.TabIndex = 8;
             this.txtOptionTime.Value = new System.DateTime(1900, 1, 1, 0, 0, 0, 0);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 81);
+            this.label3.Location = new System.Drawing.Point(7, 54);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(34, 13);
             this.label3.TabIndex = 8;
@@ -286,7 +238,7 @@ namespace T
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(4, 55);
+            this.label2.Location = new System.Drawing.Point(7, 82);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(40, 13);
             this.label2.TabIndex = 5;
@@ -466,11 +418,89 @@ namespace T
             this.btnAddNewOption.UseVisualStyleBackColor = true;
             this.btnAddNewOption.Visible = false;
             // 
+            // ID
+            // 
+            this.ID.HeaderText = "ID";
+            this.ID.Name = "ID";
+            this.ID.ReadOnly = true;
+            this.ID.Width = 50;
+            // 
+            // Name
+            // 
+            this.Name.HeaderText = "Nome";
+            this.Name.Name = "Name";
+            this.Name.Width = 150;
+            // 
+            // Count
+            // 
+            this.Count.HeaderText = "Contador";
+            this.Count.Name = "Count";
+            this.Count.ReadOnly = true;
+            this.Count.Width = 70;
+            // 
+            // Time
+            // 
+            this.Time.HeaderText = "Tempo";
+            this.Time.Name = "Time";
+            this.Time.Width = 70;
+            // 
+            // TotalTime
+            // 
+            this.TotalTime.HeaderText = "Tempo Total";
+            this.TotalTime.Name = "TotalTime";
+            this.TotalTime.ReadOnly = true;
+            // 
+            // CurrentTime
+            // 
+            this.CurrentTime.HeaderText = "Tempo Decorrido";
+            this.CurrentTime.Name = "CurrentTime";
+            this.CurrentTime.ReadOnly = true;
+            this.CurrentTime.Width = 70;
+            // 
+            // Stack
+            // 
+            this.Stack.HeaderText = "Stack";
+            this.Stack.Name = "Stack";
+            this.Stack.Width = 60;
+            // 
+            // btnPause
+            // 
+            this.btnPause.HeaderText = "Pausar";
+            this.btnPause.Name = "btnPause";
+            this.btnPause.Text = "Pausar";
+            this.btnPause.UseColumnTextForButtonValue = true;
+            // 
+            // btnReset
+            // 
+            this.btnReset.HeaderText = "Reiniciar";
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Text = "Reiniciar";
+            this.btnReset.UseColumnTextForButtonValue = true;
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.HeaderText = "Remove";
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Text = "Remover";
+            this.btnDelete.UseColumnTextForButtonValue = true;
+            // 
+            // chkPlayAlertInLoop
+            // 
+            this.chkPlayAlertInLoop.AutoSize = true;
+            this.chkPlayAlertInLoop.Location = new System.Drawing.Point(530, 29);
+            this.chkPlayAlertInLoop.Name = "chkPlayAlertInLoop";
+            this.chkPlayAlertInLoop.Size = new System.Drawing.Size(123, 17);
+            this.chkPlayAlertInLoop.TabIndex = 15;
+            this.chkPlayAlertInLoop.Text = "Tocar alerta em loop";
+            this.chkPlayAlertInLoop.UseVisualStyleBackColor = true;
+            this.chkPlayAlertInLoop.CheckedChanged += new System.EventHandler(this.chkPlayAlertInLoop_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1196, 569);
+            this.Controls.Add(this.chkPlayAlertInLoop);
             this.Controls.Add(this.btnAddNewOption);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -478,12 +508,13 @@ namespace T
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.gvTimers);
             this.Controls.Add(this.btnAddAudio);
-            this.Name = "Form1";
+            //this.Name = "Form1";
             this.Text = "Alertas";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.gvTimers)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtOptionCount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvOpcoes)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
@@ -491,6 +522,7 @@ namespace T
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtStack)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
         #endregion
@@ -520,8 +552,15 @@ namespace T
         private System.Windows.Forms.Button btnAddNewOption;
         private System.Windows.Forms.NumericUpDown txtStack;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.DataGridViewTextBoxColumn OptionName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn OptionCount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn OptionTimer;
+        private System.Windows.Forms.DataGridViewTextBoxColumn OptionFile;
+        private System.Windows.Forms.NumericUpDown txtOptionCount;
+        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.DataGridViewTextBoxColumn ID;
         private System.Windows.Forms.DataGridViewTextBoxColumn Name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Count;
         private System.Windows.Forms.DataGridViewTextBoxColumn Time;
         private System.Windows.Forms.DataGridViewTextBoxColumn TotalTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn CurrentTime;
@@ -529,11 +568,7 @@ namespace T
         private System.Windows.Forms.DataGridViewButtonColumn btnPause;
         private System.Windows.Forms.DataGridViewButtonColumn btnReset;
         private System.Windows.Forms.DataGridViewButtonColumn btnDelete;
-        private System.Windows.Forms.Button btnResetOptionCount;
-        private System.Windows.Forms.DataGridViewTextBoxColumn OptionName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn OptionCount;
-        private System.Windows.Forms.DataGridViewTextBoxColumn OptionTimer;
-        private System.Windows.Forms.DataGridViewTextBoxColumn OptionFile;
+        private System.Windows.Forms.CheckBox chkPlayAlertInLoop;
     }
 }
 
