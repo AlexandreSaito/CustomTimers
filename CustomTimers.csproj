@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AudioOptions.cs" />
+    <Compile Include="Cronometer.cs" />
     <Compile Include="CustomConfiguration.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
