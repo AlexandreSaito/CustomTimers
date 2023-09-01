@@ -26,8 +26,7 @@ namespace T
         {
             if (schedule.Row == null) return;
             schedule.Row.Cells[IndexCurrentTime].Value = Schedule.TimeToString(schedule.CurrentTime);
-            if (schedule.Time < schedule.CurrentTime)
-                schedule.Row.DefaultCellStyle.BackColor = Color.Yellow;
+            if (schedule.Time < schedule.CurrentTime) schedule.Row.DefaultCellStyle.BackColor = Color.Yellow;
         }
 
         public static void OnDone(Schedule schedule)

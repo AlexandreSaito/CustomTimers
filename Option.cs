@@ -39,7 +39,7 @@ namespace T
         protected void CreateSoundPlayer()
         {
             if (string.IsNullOrEmpty(this.AudioName)) return;
-            m_soundPlayer = new SoundPlayer(AudioOptions.AudiosFolder + "/" + this.AudioName + ".wav");
+            m_soundPlayer = new SoundPlayer(CustomConfiguration.AudiosFolder + "/" + this.AudioName + ".wav");
         }
 
         public void LoadSound()

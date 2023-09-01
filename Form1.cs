@@ -51,8 +51,8 @@ namespace T
             Option.IndexCount = gvOpcoes.Columns["OptionCount"].Index;
 
             string lastSelected = OptionManager.LastSelected();
-            FillDDLAlertGroup(lastSelected);
             LoadAlertDefinition(lastSelected);
+            FillDDLAlertGroup(lastSelected);
         }
 
         protected void LoadAlertDefinition(string definition)
@@ -172,13 +172,12 @@ namespace T
         protected void FillDDLAlertGroup(string selected)
         {
             ddlAlertGroup.Items.Clear();
-            DirectoryInfo directory = new DirectoryInfo(OptionManager.PredefsFolderPath);
+            DirectoryInfo directory = new DirectoryInfo(CustomConfiguration.PredefsFolderPath);
             var files = directory.GetFiles();
             foreach (var item in files)
             {
                 ddlAlertGroup.Items.Add(item.Name.Replace(".xml", ""));
             }
-
             ddlAlertGroup.SelectedIndex = ddlAlertGroup.Items.IndexOf(selected);
         }
 

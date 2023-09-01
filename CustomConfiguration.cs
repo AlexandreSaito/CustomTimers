@@ -5,7 +5,10 @@ namespace T
 {
     public class CustomConfiguration
     {
-        protected const string configsFilePath = "./configs";
+        public const string AudiosFolder = "./data/audios";
+        public const string XmlFileName = "./data/audios_option.xml";
+        public const string PredefsFolderPath = "./data/predefs";
+        public const string ConfigsFilePath = "./data/configs";
 
         protected const string configLine = "{0}: {1}\n";
 
@@ -15,7 +18,7 @@ namespace T
             get
             {
                 if (_customConfiguration == null)
-                    lock (configsFilePath)
+                    lock (ConfigsFilePath)
                         if (_customConfiguration == null) _customConfiguration = new CustomConfiguration();
                 return _customConfiguration;
             }
@@ -26,13 +29,21 @@ namespace T
 
         public CustomConfiguration()
         {
+            if (!Directory.Exists("./data")) Directory.CreateDirectory("./data");
             string[] configs;
-            using (var file = new FileInfo(configsFilePath).OpenRead())
+            if (File.Exists(ConfigsFilePath))
             {
-                using (StreamReader sr = new StreamReader(file))
+                using (var file = new FileInfo(ConfigsFilePath).OpenRead())
                 {
-                    configs = sr.ReadToEnd().Split('\n');
+                    using (StreamReader sr = new StreamReader(file))
+                    {
+                        configs = sr.ReadToEnd().Split('\n');
+                    }
                 }
+            }
+            else
+            {
+                configs = new string[0];
             }
 
             LastSelected = GetProperty(configs, "LAST_SELECTED", "Default");
@@ -51,7 +62,7 @@ namespace T
         {
             string configs = string.Format(configLine, "LAST_SELECTED", LastSelected);
             configs += string.Format(configLine, "PLAY_LOOP", PlayAlertInLoop ? "TRUE" : "FALSE");
-            File.WriteAllText(configsFilePath, configs);
+            File.WriteAllText(ConfigsFilePath, configs);
         }
 
         ~CustomConfiguration()

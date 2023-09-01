@@ -8,20 +8,17 @@ namespace T
 {
     public class AudioOptions
     {
-        public const string AudiosFolder = "./audios";
-        protected const string xmlFileName = "./audios_option.xml";
-
         protected XDocument m_document;
 
         public AudioOptions()
         {
-            if (!File.Exists(xmlFileName))
+            if (!File.Exists(CustomConfiguration.XmlFileName))
             {
                 m_document = new XDocument();
                 m_document.Add(new XElement("audios"));
                 return;
             }
-            m_document = XDocument.Load(xmlFileName);
+            m_document = XDocument.Load(CustomConfiguration.XmlFileName);
         }
 
         public List<string> GetFileNames()
@@ -56,14 +53,11 @@ namespace T
         public bool SaveAudio(string filePath)
         {
             string fileName = GetFileName(filePath);
-            string outputFilePath = AudiosFolder + "/" + fileName + ".wav";
-            
-            if (!Directory.Exists(AudiosFolder))
-            {
-                Directory.CreateDirectory(AudiosFolder);
-            }
+            string outputFilePath = CustomConfiguration.AudiosFolder + "/" + fileName + ".wav";
 
-            if(filePath.Substring(filePath.LastIndexOf('.') + 1, filePath.Length - (filePath.LastIndexOf('.') + 1)) != "wav")
+            if (!Directory.Exists(CustomConfiguration.AudiosFolder)) Directory.CreateDirectory(CustomConfiguration.AudiosFolder);
+
+            if (filePath.Substring(filePath.LastIndexOf('.') + 1, filePath.Length - (filePath.LastIndexOf('.') + 1)) != "wav")
             {
                 // Use the Mp3FileReader to obtain the content of the audio and use the wavfilewriter
                 // to create the new file in wav format in the providen path with the content of the file
@@ -77,7 +71,7 @@ namespace T
             if (!FileExists(fileName))
             {
                 m_document.Root.Add(new XElement("audio") { Value = fileName });
-                m_document.Save(xmlFileName);
+                m_document.Save(CustomConfiguration.XmlFileName);
             }
 
             return true;
