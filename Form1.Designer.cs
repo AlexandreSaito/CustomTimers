@@ -505,9 +505,9 @@ namespace T
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(669, 31);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(58, 13);
+            this.label8.Size = new System.Drawing.Size(61, 13);
             this.label8.TabIndex = 16;
-            this.label8.Text = "Conometro";
+            this.label8.Text = "Crônometro";
             // 
             // txtCronometer
             // 
