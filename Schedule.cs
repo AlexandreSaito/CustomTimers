@@ -14,12 +14,13 @@ namespace T
         protected static DateTime DateNull = DateTime.Parse("1900-01-01T00:00:00");
         protected static System.Timers.Timer Timer;
 
-        public static int IndexName = 1;
-        public static int IndexTime = 2;
-        public static int IndexMaxTime = 3;
-        public static int IndexCurrentTime = 3;
-        public static int IndexStackedCount = 4;
-        public static int IndexCount = 4;
+        public static int IndexName = -1;
+        public static int IndexTime = -1;
+        public static int IndexMaxTime = -1;
+        public static int IndexCurrentTime = -1;
+        public static int IndexStackedCount = -1;
+        public static int IndexCount = -1;
+
         public static List<Schedule> Schedules { get { return _schedules; } }
 
         public static void OnUpdate(Schedule schedule)

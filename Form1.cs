@@ -69,6 +69,7 @@ namespace T
             FillDDLOptions();
             FillDDLAudios();
             Schedule.StartTimer();
+            Cronometer.StartTimer();
         }
 
         private void GvTimers_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -359,6 +360,23 @@ namespace T
         {
             CustomConfiguration.Singleton.PlayAlertInLoop = chkPlayAlertInLoop.Checked;
             CustomConfiguration.Singleton.Save();
+        }
+
+        private void btnStartCronometer_Click(object sender, EventArgs e)
+        {
+            Cronometer.ClearCronometers();
+            var c = new Cronometer();
+            c.TextBox = txtCronometer;
+            btnToggleCronometer.Text = c.Paused ? "Retomar" : "Pausar";
+            Cronometer.AddCronometer(c);
+        }
+
+        private void btnToggleCronometer_Click(object sender, EventArgs e)
+        {
+            var c = Cronometer.Cronometers.FirstOrDefault();
+            if (c == null) return;
+            c.Paused = !c.Paused;
+            btnToggleCronometer.Text = c.Paused ? "Retomar" : "Pausar";
         }
     }
 }

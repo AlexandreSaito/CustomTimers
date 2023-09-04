@@ -11,10 +11,10 @@ namespace T
 {
     public class Option
     {
-        public static int IndexName = 0;
-        public static int IndexCount = 0;
-        public static int IndexTime = 0;
-        public static int IndexFile = 0;
+        public static int IndexName = -1;
+        public static int IndexCount = -1;
+        public static int IndexTime = -1;
+        public static int IndexFile = -1;
 
         protected SoundPlayer m_soundPlayer;
 

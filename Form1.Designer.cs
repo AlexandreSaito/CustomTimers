@@ -31,6 +31,16 @@ namespace T
         {
             this.btnAddAudio = new System.Windows.Forms.Button();
             this.gvTimers = new System.Windows.Forms.DataGridView();
+            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Count = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TotalTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CurrentTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Stack = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnPause = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.btnReset = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.btnDelete = new System.Windows.Forms.DataGridViewButtonColumn();
             this.ddlAudio = new System.Windows.Forms.ComboBox();
             this.ddlOption = new System.Windows.Forms.ComboBox();
             this.btnAddTimer = new System.Windows.Forms.Button();
@@ -60,17 +70,11 @@ namespace T
             this.txtStack = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
             this.btnAddNewOption = new System.Windows.Forms.Button();
-            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Count = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TotalTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CurrentTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Stack = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnPause = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.btnReset = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.btnDelete = new System.Windows.Forms.DataGridViewButtonColumn();
             this.chkPlayAlertInLoop = new System.Windows.Forms.CheckBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.txtCronometer = new System.Windows.Forms.TextBox();
+            this.btnStartCronometer = new System.Windows.Forms.Button();
+            this.btnToggleCronometer = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.gvTimers)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtOptionCount)).BeginInit();
@@ -83,7 +87,7 @@ namespace T
             // btnAddAudio
             // 
             this.btnAddAudio.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddAudio.Location = new System.Drawing.Point(1075, 29);
+            this.btnAddAudio.Location = new System.Drawing.Point(1069, 25);
             this.btnAddAudio.Name = "btnAddAudio";
             this.btnAddAudio.Size = new System.Drawing.Size(111, 23);
             this.btnAddAudio.TabIndex = 0;
@@ -116,6 +120,72 @@ namespace T
             this.gvTimers.Name = "gvTimers";
             this.gvTimers.Size = new System.Drawing.Size(844, 447);
             this.gvTimers.TabIndex = 1;
+            // 
+            // ID
+            // 
+            this.ID.HeaderText = "ID";
+            this.ID.Name = "ID";
+            this.ID.ReadOnly = true;
+            this.ID.Width = 50;
+            // 
+            // Name
+            // 
+            this.Name.HeaderText = "Nome";
+            this.Name.Name = "Name";
+            this.Name.Width = 150;
+            // 
+            // Count
+            // 
+            this.Count.HeaderText = "Contador";
+            this.Count.Name = "Count";
+            this.Count.ReadOnly = true;
+            this.Count.Width = 70;
+            // 
+            // Time
+            // 
+            this.Time.HeaderText = "Tempo";
+            this.Time.Name = "Time";
+            this.Time.Width = 70;
+            // 
+            // TotalTime
+            // 
+            this.TotalTime.HeaderText = "Tempo Total";
+            this.TotalTime.Name = "TotalTime";
+            this.TotalTime.ReadOnly = true;
+            // 
+            // CurrentTime
+            // 
+            this.CurrentTime.HeaderText = "Tempo Decorrido";
+            this.CurrentTime.Name = "CurrentTime";
+            this.CurrentTime.ReadOnly = true;
+            this.CurrentTime.Width = 70;
+            // 
+            // Stack
+            // 
+            this.Stack.HeaderText = "Stack";
+            this.Stack.Name = "Stack";
+            this.Stack.Width = 60;
+            // 
+            // btnPause
+            // 
+            this.btnPause.HeaderText = "Pausar";
+            this.btnPause.Name = "btnPause";
+            this.btnPause.Text = "Pausar";
+            this.btnPause.UseColumnTextForButtonValue = true;
+            // 
+            // btnReset
+            // 
+            this.btnReset.HeaderText = "Reiniciar";
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Text = "Reiniciar";
+            this.btnReset.UseColumnTextForButtonValue = true;
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.HeaderText = "Remove";
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Text = "Remover";
+            this.btnDelete.UseColumnTextForButtonValue = true;
             // 
             // ddlAudio
             // 
@@ -367,6 +437,7 @@ namespace T
             this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Controls.Add(this.ddlOption);
             this.groupBox3.Controls.Add(this.label4);
+            this.groupBox3.Controls.Add(this.btnAddNewOption);
             this.groupBox3.Controls.Add(this.btnAddTimer);
             this.groupBox3.Controls.Add(this.txtCustomName);
             this.groupBox3.Location = new System.Drawing.Point(12, 60);
@@ -410,79 +481,13 @@ namespace T
             // btnAddNewOption
             // 
             this.btnAddNewOption.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddNewOption.Location = new System.Drawing.Point(951, 29);
+            this.btnAddNewOption.Location = new System.Drawing.Point(1058, 17);
             this.btnAddNewOption.Name = "btnAddNewOption";
             this.btnAddNewOption.Size = new System.Drawing.Size(110, 23);
             this.btnAddNewOption.TabIndex = 14;
             this.btnAddNewOption.Text = "Adicionar Timer";
             this.btnAddNewOption.UseVisualStyleBackColor = true;
             this.btnAddNewOption.Visible = false;
-            // 
-            // ID
-            // 
-            this.ID.HeaderText = "ID";
-            this.ID.Name = "ID";
-            this.ID.ReadOnly = true;
-            this.ID.Width = 50;
-            // 
-            // Name
-            // 
-            this.Name.HeaderText = "Nome";
-            this.Name.Name = "Name";
-            this.Name.Width = 150;
-            // 
-            // Count
-            // 
-            this.Count.HeaderText = "Contador";
-            this.Count.Name = "Count";
-            this.Count.ReadOnly = true;
-            this.Count.Width = 70;
-            // 
-            // Time
-            // 
-            this.Time.HeaderText = "Tempo";
-            this.Time.Name = "Time";
-            this.Time.Width = 70;
-            // 
-            // TotalTime
-            // 
-            this.TotalTime.HeaderText = "Tempo Total";
-            this.TotalTime.Name = "TotalTime";
-            this.TotalTime.ReadOnly = true;
-            // 
-            // CurrentTime
-            // 
-            this.CurrentTime.HeaderText = "Tempo Decorrido";
-            this.CurrentTime.Name = "CurrentTime";
-            this.CurrentTime.ReadOnly = true;
-            this.CurrentTime.Width = 70;
-            // 
-            // Stack
-            // 
-            this.Stack.HeaderText = "Stack";
-            this.Stack.Name = "Stack";
-            this.Stack.Width = 60;
-            // 
-            // btnPause
-            // 
-            this.btnPause.HeaderText = "Pausar";
-            this.btnPause.Name = "btnPause";
-            this.btnPause.Text = "Pausar";
-            this.btnPause.UseColumnTextForButtonValue = true;
-            // 
-            // btnReset
-            // 
-            this.btnReset.HeaderText = "Reiniciar";
-            this.btnReset.Name = "btnReset";
-            this.btnReset.Text = "Reiniciar";
-            this.btnReset.UseColumnTextForButtonValue = true;
-            // 
-            // btnDelete
-            // 
-            this.btnDelete.HeaderText = "Remove";
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Text = "Remover";
-            this.btnDelete.UseColumnTextForButtonValue = true;
             // 
             // chkPlayAlertInLoop
             // 
@@ -495,13 +500,52 @@ namespace T
             this.chkPlayAlertInLoop.UseVisualStyleBackColor = true;
             this.chkPlayAlertInLoop.CheckedChanged += new System.EventHandler(this.chkPlayAlertInLoop_CheckedChanged);
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(669, 31);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(61, 13);
+            this.label8.TabIndex = 16;
+            this.label8.Text = "Crônometro";
+            // 
+            // txtCronometer
+            // 
+            this.txtCronometer.Location = new System.Drawing.Point(733, 28);
+            this.txtCronometer.Name = "txtCronometer";
+            this.txtCronometer.Size = new System.Drawing.Size(100, 20);
+            this.txtCronometer.TabIndex = 17;
+            // 
+            // btnStartCronometer
+            // 
+            this.btnStartCronometer.Location = new System.Drawing.Point(839, 26);
+            this.btnStartCronometer.Name = "btnStartCronometer";
+            this.btnStartCronometer.Size = new System.Drawing.Size(75, 23);
+            this.btnStartCronometer.TabIndex = 18;
+            this.btnStartCronometer.Text = "Iniciar";
+            this.btnStartCronometer.UseVisualStyleBackColor = true;
+            this.btnStartCronometer.Click += new System.EventHandler(this.btnStartCronometer_Click);
+            // 
+            // btnToggleCronometer
+            // 
+            this.btnToggleCronometer.Location = new System.Drawing.Point(920, 26);
+            this.btnToggleCronometer.Name = "btnToggleCronometer";
+            this.btnToggleCronometer.Size = new System.Drawing.Size(75, 23);
+            this.btnToggleCronometer.TabIndex = 19;
+            this.btnToggleCronometer.Text = "Pausar";
+            this.btnToggleCronometer.UseVisualStyleBackColor = true;
+            this.btnToggleCronometer.Click += new System.EventHandler(this.btnToggleCronometer_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1196, 569);
+            this.Controls.Add(this.btnToggleCronometer);
+            this.Controls.Add(this.btnStartCronometer);
+            this.Controls.Add(this.txtCronometer);
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.chkPlayAlertInLoop);
-            this.Controls.Add(this.btnAddNewOption);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.gvOpcoes);
@@ -569,6 +613,10 @@ namespace T
         private System.Windows.Forms.DataGridViewButtonColumn btnReset;
         private System.Windows.Forms.DataGridViewButtonColumn btnDelete;
         private System.Windows.Forms.CheckBox chkPlayAlertInLoop;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox txtCronometer;
+        private System.Windows.Forms.Button btnStartCronometer;
+        private System.Windows.Forms.Button btnToggleCronometer;
     }
 }
 
