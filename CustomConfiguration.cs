@@ -9,6 +9,7 @@ namespace T
         public const string XmlFileName = "./data/audios_option.xml";
         public const string PredefsFolderPath = "./data/predefs";
         public const string ConfigsFilePath = "./data/configs";
+        public const string TimersFolderPath = "./data/timers";
 
         protected const string configLine = "{0}: {1}\n";
 

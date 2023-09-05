@@ -50,9 +50,17 @@ namespace T
             Option.IndexFile = gvOpcoes.Columns["OptionFile"].Index;
             Option.IndexCount = gvOpcoes.Columns["OptionCount"].Index;
 
+            Schedule.StartTimer();
+            Cronometer.StartTimer();
             string lastSelected = OptionManager.LastSelected();
-            LoadAlertDefinition(lastSelected);
             FillDDLAlertGroup(lastSelected);
+            //LoadAlertDefinition(lastSelected);
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            OM.Save();
+            Schedule.SaveCurrentTimers();
         }
 
         protected void LoadAlertDefinition(string definition)
@@ -63,13 +71,27 @@ namespace T
             gvTimers.Rows.Clear();
             gvOpcoes.Rows.Clear();
             if (OM != null) OM.Save();
-            OM = null;
             OM = new OptionManager(definition, gvOpcoes);
             OM.Load();
             FillDDLOptions();
             FillDDLAudios();
-            Schedule.StartTimer();
-            Cronometer.StartTimer();
+            Schedule.LoadFromDefinition(definition, OM);
+            Schedule.DoForAll((Schedule s) =>
+            {
+                DataGridViewRow row = gvTimers.Rows[gvTimers.Rows.Add(s.ID, s.Name)];
+                s.Row = row;
+                Schedule.Validate(s, false);
+                if (!s.Done) s.Paused = true;
+                s.UpdateDataGridViewRow();
+            });
+        }
+
+        protected void ResetTimer(Schedule schedule)
+        {
+            schedule.Option.StopSound();
+            gvTimers.Rows.Remove(schedule.Row);
+            Schedule.RemoveSchedule(schedule);
+            AddTimer(schedule.Option.Name, schedule.Name, schedule.Count);
         }
 
         private void GvTimers_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -81,12 +103,6 @@ namespace T
 
                 gvTimers.Rows.Remove(selected.Row);
                 Schedule.RemoveSchedule(selected);
-                selected.Option.StopSound();
-                if (!selected.Done)
-                {
-                    int count = selected.Count > 0 ? selected.CurrentTime / selected.Time : 0;
-                    if (count > 0) selected.Option.AddCount(count);
-                }
             }
             else if (e.ColumnIndex == IndexBtnPauseTimer)
             {
@@ -107,11 +123,7 @@ namespace T
             {
                 Schedule selected = Schedule.Schedules.FirstOrDefault(x => x.Row.Index == e.RowIndex);
                 if (selected == null) return;
-
-                selected.Option.StopSound();
-                gvTimers.Rows.Remove(selected.Row);
-                Schedule.RemoveSchedule(selected);
-                AddTimer(selected.Option.Name, selected.Name, selected.Count);
+                ResetTimer(selected);
             }
         }
 
@@ -377,6 +389,26 @@ namespace T
             if (c == null) return;
             c.Paused = !c.Paused;
             btnToggleCronometer.Text = c.Paused ? "Retomar" : "Pausar";
+        }
+
+        private void btnResumeTimers_Click(object sender, EventArgs e)
+        {
+            Schedule.DoForAll((Schedule s) => { if (!s.Done) s.Paused = false; });
+        }
+
+        private void btnPauseTimers_Click(object sender, EventArgs e)
+        {
+            Schedule.DoForAll((Schedule s) => { if(!s.Done) s.Paused = true; });
+        }
+
+        private void btnResetTimers_Click(object sender, EventArgs e)
+        {
+            Schedule.DoForAll((Schedule s) => { ResetTimer(s); });
+        }
+
+        private void btnClearTimers_Click(object sender, EventArgs e)
+        {
+            Schedule.DoForAll((Schedule s) => { Schedule.RemoveSchedule(s); gvTimers.Rows.Remove(s.Row); });
         }
     }
 }

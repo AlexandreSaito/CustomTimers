@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace T
 {
@@ -21,6 +23,8 @@ namespace T
         public static int IndexStackedCount = -1;
         public static int IndexCount = -1;
 
+        protected static string currentDefinition;
+
         public static List<Schedule> Schedules { get { return _schedules; } }
 
         public static void OnUpdate(Schedule schedule)
@@ -30,21 +34,42 @@ namespace T
             if (schedule.Time < schedule.CurrentTime) schedule.Row.DefaultCellStyle.BackColor = Color.Yellow;
         }
 
-        public static void OnDone(Schedule schedule)
+        public static void OnDone(Schedule schedule, bool addCount)
         {
             if (schedule.Row != null)
             {
                 schedule.Row.DefaultCellStyle.BackColor = Color.Green;
             }
-            schedule.Option.AddCount(schedule.Count);
-            schedule.Option.PlaySound();
-            var list = Schedules.Where(x => x.Option == schedule.Option);
-            foreach (var item in list)
+            if (addCount)
             {
-                item.UpdateDataGridViewRow();
+                schedule.Option.AddCount(schedule.Count);
+                schedule.Option.PlaySound();
+                var list = Schedules.Where(x => x.Option == schedule.Option);
+                foreach (var item in list)
+                {
+                    item.UpdateDataGridViewRow();
+                }
             }
         }
 
+        public static void Validate(Schedule schedule, bool addCount = true)
+        {
+            if (schedule.CurrentTime >= schedule.MaxTimer)
+            {
+                schedule.Done = true;
+                OnDone(schedule, addCount);
+            }
+        }
+
+        public static void DoForAll(Action<Schedule> action)
+        {
+            var list = new Schedule[Schedules.Count()];
+            Schedules.CopyTo(list);
+            foreach (var item in list)
+            {
+                action(item);
+            }
+        }
 
         public static void StartTimer()
         {
@@ -54,8 +79,6 @@ namespace T
                 Timer.Elapsed += Timer_Elapsed;
                 Timer.Start();
             }
-            _schedules.Clear();
-            _maxId = 0;
         }
 
         public static void AddSchedule(Schedule schedule)
@@ -65,6 +88,12 @@ namespace T
 
         public static void RemoveSchedule(Schedule schedule)
         {
+            schedule.Option.StopSound();
+            if (!schedule.Done)
+            {
+                int count = schedule.Count > 0 ? schedule.CurrentTime / schedule.Time : 0;
+                if (count > 0) schedule.Option.AddCount(count);
+            }
             _schedules.Remove(schedule);
         }
         public static string TimeToString(int time)
@@ -82,12 +111,63 @@ namespace T
                 if (item.Done || item.Paused) continue;
                 item.CurrentTime += 1;
                 OnUpdate(item);
-                if (item.CurrentTime >= item.MaxTimer)
+                Validate(item);
+            }
+        }
+
+        public static void LoadFromDefinition(string definition, OptionManager om)
+        {
+            SaveCurrentTimers();
+            if (currentDefinition == definition) return;
+            _schedules.Clear();
+            _maxId = 0;
+            currentDefinition = definition;
+
+            if (!File.Exists(CustomConfiguration.TimersFolderPath + "/" + currentDefinition + ".xml")) return;
+            XDocument document = XDocument.Load(CustomConfiguration.TimersFolderPath + "/" + currentDefinition + ".xml");
+            foreach (var item in document.Root.Elements())
+            {
+                try
                 {
-                    item.Done = true;
-                    OnDone(item);
+                    Option option = om.GetOption(item.Element("option_name").Value);
+                    if (option == null) continue;
+                    Schedule s = new Schedule(option)
+                    {
+                        Name = item.Element("timer_name").Value,
+                        Time = Convert.ToInt32(item.Element("timer_time").Value),
+                        CurrentTime = Convert.ToInt32(item.Element("timer_current_time").Value),
+                        Count = Convert.ToInt32(item.Element("timer_stack").Value),
+                    };
+                    AddSchedule(s);
+                }
+                catch (Exception ex)
+                {
+                    continue;
                 }
             }
+        }
+
+        public static void SaveCurrentTimers()
+        {
+            if (string.IsNullOrEmpty(currentDefinition)) return;
+            if (!Directory.Exists(CustomConfiguration.TimersFolderPath)) Directory.CreateDirectory(CustomConfiguration.TimersFolderPath);
+
+            XDocument document = new XDocument();
+            document.Add(new XElement("timers"));
+            DoForAll((Schedule s) =>
+            {
+                XElement element = new XElement("timer");
+                element.Add(
+                    new XElement("option_name") { Value = s.Option.Name },
+                    new XElement("timer_name") { Value = s.Name },
+                    new XElement("timer_time") { Value = s.Time.ToString() },
+                    new XElement("timer_current_time") { Value = s.CurrentTime.ToString() },
+                    new XElement("timer_stack") { Value = s.Count.ToString() }
+                    );
+                document.Root.Add(element);
+            });
+            document.Save(CustomConfiguration.TimersFolderPath + "/" + currentDefinition + ".xml");
+
         }
 
         public Schedule(Option option)
