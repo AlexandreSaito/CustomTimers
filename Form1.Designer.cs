@@ -50,6 +50,7 @@ namespace T
             this.label7 = new System.Windows.Forms.Label();
             this.btnCancelar = new System.Windows.Forms.Button();
             this.txtOldName = new System.Windows.Forms.TextBox();
+            this.btnAddNewOption = new System.Windows.Forms.Button();
             this.txtOptionTime = new System.Windows.Forms.DateTimePicker();
             this.label3 = new System.Windows.Forms.Label();
             this.txtOptionName = new System.Windows.Forms.TextBox();
@@ -69,12 +70,15 @@ namespace T
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.txtStack = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
-            this.btnAddNewOption = new System.Windows.Forms.Button();
             this.chkPlayAlertInLoop = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
             this.txtCronometer = new System.Windows.Forms.TextBox();
             this.btnStartCronometer = new System.Windows.Forms.Button();
             this.btnToggleCronometer = new System.Windows.Forms.Button();
+            this.btnClearTimers = new System.Windows.Forms.Button();
+            this.btnPauseTimers = new System.Windows.Forms.Button();
+            this.btnResumeTimers = new System.Windows.Forms.Button();
+            this.btnResetTimers = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.gvTimers)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtOptionCount)).BeginInit();
@@ -115,10 +119,10 @@ namespace T
             this.btnPause,
             this.btnReset,
             this.btnDelete});
-            this.gvTimers.Location = new System.Drawing.Point(12, 110);
+            this.gvTimers.Location = new System.Drawing.Point(12, 139);
             this.gvTimers.MultiSelect = false;
             this.gvTimers.Name = "gvTimers";
-            this.gvTimers.Size = new System.Drawing.Size(844, 447);
+            this.gvTimers.Size = new System.Drawing.Size(844, 418);
             this.gvTimers.TabIndex = 1;
             // 
             // ID
@@ -231,6 +235,7 @@ namespace T
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.btnCancelar);
             this.groupBox1.Controls.Add(this.txtOldName);
+            this.groupBox1.Controls.Add(this.btnAddNewOption);
             this.groupBox1.Controls.Add(this.txtOptionTime);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.txtOptionName);
@@ -279,6 +284,17 @@ namespace T
             this.txtOldName.TabIndex = 9;
             this.txtOldName.TabStop = false;
             this.txtOldName.Visible = false;
+            // 
+            // btnAddNewOption
+            // 
+            this.btnAddNewOption.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAddNewOption.Location = new System.Drawing.Point(198, 130);
+            this.btnAddNewOption.Name = "btnAddNewOption";
+            this.btnAddNewOption.Size = new System.Drawing.Size(110, 23);
+            this.btnAddNewOption.TabIndex = 14;
+            this.btnAddNewOption.Text = "Adicionar Timer";
+            this.btnAddNewOption.UseVisualStyleBackColor = true;
+            this.btnAddNewOption.Visible = false;
             // 
             // txtOptionTime
             // 
@@ -437,7 +453,6 @@ namespace T
             this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Controls.Add(this.ddlOption);
             this.groupBox3.Controls.Add(this.label4);
-            this.groupBox3.Controls.Add(this.btnAddNewOption);
             this.groupBox3.Controls.Add(this.btnAddTimer);
             this.groupBox3.Controls.Add(this.txtCustomName);
             this.groupBox3.Location = new System.Drawing.Point(12, 60);
@@ -477,17 +492,6 @@ namespace T
             this.label6.Size = new System.Drawing.Size(35, 13);
             this.label6.TabIndex = 8;
             this.label6.Text = "Stack";
-            // 
-            // btnAddNewOption
-            // 
-            this.btnAddNewOption.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddNewOption.Location = new System.Drawing.Point(1058, 17);
-            this.btnAddNewOption.Name = "btnAddNewOption";
-            this.btnAddNewOption.Size = new System.Drawing.Size(110, 23);
-            this.btnAddNewOption.TabIndex = 14;
-            this.btnAddNewOption.Text = "Adicionar Timer";
-            this.btnAddNewOption.UseVisualStyleBackColor = true;
-            this.btnAddNewOption.Visible = false;
             // 
             // chkPlayAlertInLoop
             // 
@@ -536,11 +540,55 @@ namespace T
             this.btnToggleCronometer.UseVisualStyleBackColor = true;
             this.btnToggleCronometer.Click += new System.EventHandler(this.btnToggleCronometer_Click);
             // 
+            // btnClearTimers
+            // 
+            this.btnClearTimers.Location = new System.Drawing.Point(345, 110);
+            this.btnClearTimers.Name = "btnClearTimers";
+            this.btnClearTimers.Size = new System.Drawing.Size(101, 23);
+            this.btnClearTimers.TabIndex = 10;
+            this.btnClearTimers.Text = "Limpar Timers";
+            this.btnClearTimers.UseVisualStyleBackColor = true;
+            this.btnClearTimers.Click += new System.EventHandler(this.btnClearTimers_Click);
+            // 
+            // btnPauseTimers
+            // 
+            this.btnPauseTimers.Location = new System.Drawing.Point(119, 110);
+            this.btnPauseTimers.Name = "btnPauseTimers";
+            this.btnPauseTimers.Size = new System.Drawing.Size(91, 23);
+            this.btnPauseTimers.TabIndex = 11;
+            this.btnPauseTimers.Text = "Pausar Timers";
+            this.btnPauseTimers.UseVisualStyleBackColor = true;
+            this.btnPauseTimers.Click += new System.EventHandler(this.btnPauseTimers_Click);
+            // 
+            // btnResumeTimers
+            // 
+            this.btnResumeTimers.Location = new System.Drawing.Point(12, 110);
+            this.btnResumeTimers.Name = "btnResumeTimers";
+            this.btnResumeTimers.Size = new System.Drawing.Size(101, 23);
+            this.btnResumeTimers.TabIndex = 20;
+            this.btnResumeTimers.Text = "Retomar Timers";
+            this.btnResumeTimers.UseVisualStyleBackColor = true;
+            this.btnResumeTimers.Click += new System.EventHandler(this.btnResumeTimers_Click);
+            // 
+            // btnResetTimers
+            // 
+            this.btnResetTimers.Location = new System.Drawing.Point(224, 110);
+            this.btnResetTimers.Name = "btnResetTimers";
+            this.btnResetTimers.Size = new System.Drawing.Size(111, 23);
+            this.btnResetTimers.TabIndex = 21;
+            this.btnResetTimers.Text = "Reiniciar Timers";
+            this.btnResetTimers.UseVisualStyleBackColor = true;
+            this.btnResetTimers.Click += new System.EventHandler(this.btnResetTimers_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1196, 569);
+            this.Controls.Add(this.btnResetTimers);
+            this.Controls.Add(this.btnResumeTimers);
+            this.Controls.Add(this.btnClearTimers);
+            this.Controls.Add(this.btnPauseTimers);
             this.Controls.Add(this.btnToggleCronometer);
             this.Controls.Add(this.btnStartCronometer);
             this.Controls.Add(this.txtCronometer);
@@ -554,6 +602,7 @@ namespace T
             this.Controls.Add(this.btnAddAudio);
             //this.Name = "Form1";
             this.Text = "Alertas";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.gvTimers)).EndInit();
             this.groupBox1.ResumeLayout(false);
@@ -617,6 +666,10 @@ namespace T
         private System.Windows.Forms.TextBox txtCronometer;
         private System.Windows.Forms.Button btnStartCronometer;
         private System.Windows.Forms.Button btnToggleCronometer;
+        private System.Windows.Forms.Button btnClearTimers;
+        private System.Windows.Forms.Button btnPauseTimers;
+        private System.Windows.Forms.Button btnResumeTimers;
+        private System.Windows.Forms.Button btnResetTimers;
     }
 }
 
